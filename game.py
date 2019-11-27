@@ -54,14 +54,18 @@ class Game():
 
     def recieve_command(self, command):
         """Handel the recieved command."""
+        if command == '/play':
+            self.play()
+            return True
         for current_reply in self.current_replies:
-            if current_reply['command'] == command:
+            if '/' + current_reply['command'] == command:
                 if callable(current_reply['callback']):
                     current_reply['callback']()
+                    return False
 
     @classmethod
     def game_name(self):
-        """Unique game name used for selection."""
+        """Get unique game name used for selection no spaces."""
 
     @classmethod
     def description(self):
@@ -69,3 +73,7 @@ class Game():
 
     def welcome(self):
         """Get a welcome message."""
+
+    def play(self):
+        """Start playing."""
+        self.current_replies = []

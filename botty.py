@@ -5,6 +5,8 @@ Botty.py for the class of 2019.
 This program will attempt to play our games made in class over telegram.
 """
 
+from pathlib import Path
+
 from testgame import TestGame
 
 import logging
@@ -26,17 +28,16 @@ games = [
 def pick_a_game(update, context):
     """Pick a game from a list and init the class."""
     for game in games:
-        message = '/' + game.game_name + '\n' + game.description
+        message = '/' + game.game_name() + '\n' + game.description()
         update.message.reply_text(message)
 
 
 def start(update, context):
     """Send a message when the command /start is issued."""
     update.message.reply_text('Hi we should pick a game!')
-    chat_id = context.chat_id
+    chat_id = update.message.chat_id
     users[chat_id] = None
-    game = pick_a_game(update, context)
-    users[chat_id] = game
+    pick_a_game(update, context)
 
 
 def help(update, context):
@@ -49,9 +50,9 @@ def error(update, context):
     logger.warning('Update "%s" caused error "%s"', update, context.error)
 
 
-def command_recieved(self, update, context):
+def command_recieved(update, context):
     """Send command to appropiate game."""
-    chat_id = context.chat_id
+    chat_id = update.message.chat_id
     command = update.message.text
     if chat_id in users:
         game = users[chat_id]
@@ -59,15 +60,19 @@ def command_recieved(self, update, context):
         game = None
 
     if game:
-        game.recieve_command(command)
+        if not game.recieve_command(command):
+            logger.warning(f'Unhandelled command recieved {command}')
     else:
         # Starting a new game
         for game_i in games:
-            if game_i.game_name == command:
+            if '/' + game_i.game_name() == command:
                 users[chat_id] = game_i()
                 game = users[chat_id]
                 message = "You choose to play..\n"
+                message += '\n=================='
                 message += game.welcome()
+                message += '\n=================='
+                message += '\n\nTo begin use /play'
                 update.message.reply_text(message)
 
 
@@ -76,7 +81,9 @@ def main():
     # Create the Updater and pass it your bot's token.
     # Make sure to set use_context=True to use the new context based callbacks
     # Post version 12 this will no longer be necessary
-    updater = Updater("TOKEN", use_context=True)
+    token_file = Path("token")
+    token = token_file.read_text().strip()
+    updater = Updater(token, use_context=True)
 
     # Get the dispatcher to register handlers
     dp = updater.dispatcher
