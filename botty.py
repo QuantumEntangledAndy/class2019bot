@@ -7,8 +7,8 @@ This program will attempt to play our games made in class over telegram.
 
 from pathlib import Path
 
-from testgame import TestGame
-from abyss import Abyss
+from games.testgame import TestGame
+from games.abyss import Abyss
 
 import logging
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
