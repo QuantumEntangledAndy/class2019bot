@@ -1,7 +1,7 @@
 """
 Abyss Game.
 
-Authours: Kevin
+Authours: Kevin,  Yosita Phailomwong
 
 Adapted to play on telegram by Andrew W King
 """
