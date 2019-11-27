@@ -4,7 +4,7 @@ Module handels basic setup for all games.
 Licence: AGPL v3
 """
 
-from telegram import ReplyKeyboardMarkup, KeyboardButton
+from telegram import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
 
 
 def build_menu(buttonTexts, cols):
@@ -27,41 +27,66 @@ def make_keyboard(replies):
 class Game():
     """Base class for the game."""
 
-    def __init__(self):
+    def __init__(self, bot, chat_id):
         """Create the class by storing the chat ID."""
-        self.current_replies = []
+        self.possible_replies = []
+        self.bot = bot
+        self.chat_id = chat_id
+        self.the_open_answer = None
 
-    def say(self, message, update):
+    def say(self, message):
         """Say something in the chat."""
-        update.message.reply_text(message)
+        self.bot.send_message(self.chat_id, message,
+                              reply_markup=ReplyKeyboardRemove())
 
-    def choice(self, options, callbacks, update,
-               message="What do you choose?"):
+    def choice(self, message="What do you choose?", options=[], callbacks=[]):
         """Give the player some choices."""
-        self.current_replies = []
+        self.possible_replies = []
+        if callable(callbacks):
+            for idx, choice in enumerate(options):
+                self.possible_replies.append({
+                    'command': choice,
+                    'callback': callbacks
+                })
+        else:
+            if len(options) != len(callbacks):
+                raise ValueError("Length of options not the same as length of"
+                                 + "callbacks")
+
+            for idx, choice in enumerate(options):
+                self.possible_replies.append({
+                    'command': choice,
+                    'callback': callbacks[idx]
+                })
+
         keyboard = make_keyboard(list(options))
-        update.message.reply_text(message, reply_markup=keyboard)
+        self.bot.send_message(self.chat_id, message, reply_markup=keyboard)
 
-        if len(options) != len(callbacks):
-            raise ValueError("Length of options not the same as length of"
-                             + "callbacks")
-
-        for idx, choice in enumerate(options):
-            self.current_replies.append({
-                'command': choice,
-                'callback': callbacks[idx]
-            })
+    def open_answer(self, message="What say you?", callback=None):
+        """Set next text they give us will be used for an open answer."""
+        self.the_open_answer = callback
+        self.say(message)
 
     def recieve_command(self, command):
         """Handel the recieved command."""
         if command == '/play':
+            self.possible_replies = []
             self.play()
             return True
-        for current_reply in self.current_replies:
-            if '/' + current_reply['command'] == command:
-                if callable(current_reply['callback']):
-                    current_reply['callback']()
-                    return False
+        for possible_reply in self.possible_replies:
+            if '/' + possible_reply['command'] == command:
+                if callable(possible_reply['callback']):
+                    possible_reply['callback'](possible_reply['command'])
+                    return True
+        return False
+
+    def recieve_text(self, message):
+        """Handle open answer replies."""
+        if self.the_open_answer:
+            callback = self.the_open_answer
+            self.the_open_answer = None
+            if callable(callback):
+                callback(message)
 
     @classmethod
     def game_name(self):
@@ -75,5 +100,4 @@ class Game():
         """Get a welcome message."""
 
     def play(self):
-        """Start playing."""
-        self.current_replies = []
+        """Start playing, shoud reset too."""

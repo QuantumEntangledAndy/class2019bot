@@ -8,9 +8,11 @@ This program will attempt to play our games made in class over telegram.
 from pathlib import Path
 
 from testgame import TestGame
+from abyss import Abyss
 
 import logging
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from telegram import ReplyKeyboardRemove
 
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s'
@@ -21,20 +23,27 @@ logger = logging.getLogger(__name__)
 users = {}
 
 games = [
-    TestGame
+    TestGame,
+    Abyss
 ]
+
+
+def no_keyboard():
+    """Get the setting required to disable the keyboard."""
+    return {"reply_markup": ReplyKeyboardRemove()}
 
 
 def pick_a_game(update, context):
     """Pick a game from a list and init the class."""
     for game in games:
         message = '/' + game.game_name() + '\n' + game.description()
-        update.message.reply_text(message)
+        update.message.reply_text(message, **no_keyboard())
 
 
 def start(update, context):
     """Send a message when the command /start is issued."""
-    update.message.reply_text('Hi we should pick a game!')
+    update.message.reply_text('Hi we should pick a game!',
+                              **no_keyboard())
     chat_id = update.message.chat_id
     users[chat_id] = None
     pick_a_game(update, context)
@@ -42,7 +51,7 @@ def start(update, context):
 
 def help(update, context):
     """Send a message when the command /help is issued."""
-    update.message.reply_text('Help!')
+    update.message.reply_text('Help!', **no_keyboard())
 
 
 def error(update, context):
@@ -66,14 +75,28 @@ def command_recieved(update, context):
         # Starting a new game
         for game_i in games:
             if '/' + game_i.game_name() == command:
-                users[chat_id] = game_i()
+                users[chat_id] = game_i(context.bot, chat_id)
                 game = users[chat_id]
                 message = "You choose to play..\n"
                 message += '\n=================='
                 message += game.welcome()
                 message += '\n=================='
                 message += '\n\nTo begin use /play'
-                update.message.reply_text(message)
+                update.message.reply_text(message,
+                                          **no_keyboard())
+
+
+def text_recieved(update, context):
+    """Send text to appropiate game."""
+    chat_id = update.message.chat_id
+    text = update.message.text
+    if chat_id in users:
+        game = users[chat_id]
+    else:
+        game = None
+
+    if game:
+        game.recieve_text(text)
 
 
 def main():
@@ -94,9 +117,10 @@ def main():
 
     # General command handeller for game options
     dp.add_handler(MessageHandler(Filters.command, command_recieved))
+    dp.add_handler(MessageHandler(Filters.text, text_recieved))
 
     # log all errors
-    dp.add_error_handler(error)
+    # dp.add_error_handler(error)
 
     # Start the Bot
     updater.start_polling()
