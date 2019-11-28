@@ -149,7 +149,6 @@ class Love(Game):
         self.say("" + self.situations[i].situation + "\n")
         self.say("1." + self.situations[i].first_option)
         self.say("2." + self.situations[i].second_option + "\n")
-        self.say("What do you choose")
         self.i = i
         self.choice("What do you choose", ["1", "2"], self.situation_result)
 
