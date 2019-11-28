@@ -146,9 +146,9 @@ class Love(Game):
 
     def play_next_situation(self, i):
         """Play the situation."""
-        self.say("", self.situations[i].situation, "\n")
-        self.say("1.", self.situations[i].first_option)
-        self.say("2.", self.situations[i].second_option, "\n")
+        self.say("" + self.situations[i].situation + "\n")
+        self.say("1." + self.situations[i].first_option)
+        self.say("2." + self.situations[i].second_option + "\n")
         self.say("What do you choose")
         self.i = i
         self.choice("What do you choose", ["1", "2"], self.situation_result)
@@ -163,7 +163,7 @@ class Love(Game):
         else:
             outcome = self.situations[i].condition(reply,
                                                    self.player)
-        self.say("Outcome: ", outcome, "\n")
+        self.say("Outcome: " + outcome + "\n")
 
         if i == 4:
             self.final_scores()
@@ -173,6 +173,6 @@ class Love(Game):
     def final_scores(self):
         """Play the final scores bit."""
         if self.player.current_point >= 41:
-            print('CONGRATULATIONS!!!')
+            self.say('CONGRATULATIONS!!!')
         if self.player.current_point <= 40:
-            print('Oopsie...')
+            self.say('Oopsie...')
