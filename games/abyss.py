@@ -1,7 +1,7 @@
 """
 Abyss Game.
 
-Authours: Kevin,  Yosita Phailomwong
+Authours: Kevin,  Yosita Phailomwong,  Kornkanok  Paramesirikuntorn
 
 Adapted to play on telegram by Andrew W King
 """
@@ -52,7 +52,7 @@ class Abyss(Game):
     def welcome(self):
         """Get a welcome message."""
         return """Welcome to quester
-        Created by Kevin and Yosita"""
+        Created by Kevin,  Yosita Phailomwong,  Kornkanok  Paramesirikuntorn"""
 
     def play(self):
         """Start playing."""

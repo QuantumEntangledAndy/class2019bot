@@ -1,7 +1,7 @@
 """
 The Trashy RPG Game.
 
-Authours:  Pimsucha Kanjchanapoomi
+Authours:  Pimsucha Kanjchanapoomi,  Saithan Srichantamit
 """
 
 import yaml

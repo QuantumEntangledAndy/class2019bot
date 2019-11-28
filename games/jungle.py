@@ -1,7 +1,7 @@
 """
 The Jungle Survial Game.
 
-Authours:  Thitaporn Petchpadoong
+Authours:  Thitaporn Petchpadoong,  Nakamol Sansuktaweesub
 """
 
 from game import Game
@@ -23,7 +23,8 @@ class Jungle(Game):
     def welcome(self):
         """Get a welcome message."""
         return ("Jungle!\nWhere monkies are the least of your worries\n"
-                + "Authours:  Thitaporn Petchpadoong")
+                + "Authours:   Thitaporn Petchpadoong,"
+                + " Nakamol Sansuktaweesub")
 
     def play(self):
         """Get the party started."""
