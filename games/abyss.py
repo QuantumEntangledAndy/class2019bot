@@ -52,7 +52,7 @@ class Abyss(Game):
     def welcome(self):
         """Get a welcome message."""
         return """Welcome to quester
-        Created by Kevin...."""
+        Created by Kevin and Yosita"""
 
     def play(self):
         """Start playing."""

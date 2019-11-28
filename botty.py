@@ -3,6 +3,8 @@
 Botty.py for the class of 2019.
 
 This program will attempt to play our games made in class over telegram.
+
+Licence: AGPL v3
 """
 
 from pathlib import Path
