@@ -5,9 +5,9 @@ Authours:  Pimsucha Kanjchanapoomi
 """
 
 import yaml
-from pathlib import Path
 import random
-import time
+
+from game import Game
 
 
 def rng_bless(num):
@@ -19,8 +19,9 @@ def rng_bless(num):
 class Player():
     """The player data."""
 
-    def __init__(self):
+    def __init__(self, bot):
         """Init the player."""
+        self.bot = bot
         self.name = 'gimme a name'
         self.lv = 1
         self.health = 25
@@ -61,8 +62,8 @@ class Player():
 
     def damage(self, amount):
         """Damage the player."""
-        print(f"From your Hp {self.health} you lost {amount}...\n"
-              + f"You have {max([self.health-amount,0])} Hp left")
+        self.bot.say(f"From your Hp {self.health} you lost {amount}...\n"
+                     + f"You have {max([self.health-amount,0])} Hp left")
         self.health = self.health - amount
         if self.health < 0:
             self.health = 0
@@ -88,28 +89,28 @@ class Player():
         if self.ducat >= self.str:
             self.ducat -= self.str
             self.str += 1
-            print("successfully add strength")
+            self.bot.say("successfully add strength")
 
     def add_agi(self):
         """Gain agility."""
         if self.ducat >= self.agi:
             self.ducat -= self.agi
             self.agi += 1
-            print("successfully add agility")
+            self.bot.say("successfully add agility")
 
     def add_vit(self):
         """Gain vitality."""
         if self.ducat >= self.vit:
             self.ducat -= self.vit
             self.vit += 1
-            print("successfully add vitality")
+            self.bot.say("successfully add vitality")
 
     def add_lck(self):
         """Gain luck."""
         if self.ducat >= 2*self.lck:
             self.ducat -= self.lck
             self.lck += 1
-            print("successfully add luck")
+            self.bot.say("successfully add luck")
 
     def money_gained(self, amount):
         """Gain money."""
@@ -199,14 +200,18 @@ class Boss():
 class Event():
     """The place where anything happens."""
 
-    def __init__(self):
+    def __init__(self, bot):
         """Make the event."""
         self.stages = 0
+        self.bot = bot
 
-    def dialog(self, message):
+    def say(self, message):
         """Talk to the player."""
-        time.sleep(0)
-        print(message)
+        self.bot.say(message)
+
+    def choice(self, message, options, callbacks):
+        """Pass choices onto bot."""
+        self.bot.choice(message, options, callbacks)
 
     def enter(self, player):
         """Do something."""
@@ -218,19 +223,11 @@ class Battle(Event):
 
     def enter(self, player, opponent):
         """Start the event."""
-        b_options = ["Fight", "Give Up", "See Stat"]
-        while True:
-            self.dialog(f"You have encounter {opponent.name},"
-                        + "what will you do?")
-            for idx, b_option in enumerate(b_options):
-                self.dialog(f"{idx+1} : {b_option} ")
-            choice = input()
-            for idx, b_option in enumerate(b_options):
-                if choice == str(idx+1) or choice.lower() == b_option.lower():
-                    if b_option == 'See Stat':
-                        See_Stat().enter(player)
-                    else:
-                        return b_option
+        b_options = ["Fight", "Give_Up", "See_Stat"]
+        self.say(f"You have encounter {opponent.name}")
+        for idx, b_option in enumerate(b_options):
+            self.say(f"{idx+1} : {b_option} ")
+        self.choice("What will you do?", b_options, self.bot.post_battle)
 
 
 class Inn(Event):
@@ -239,23 +236,19 @@ class Inn(Event):
     def enter(self, player):
         """Start the event."""
         i_options = [
-            "Add Strength",
-            "Add Agility",
-            "Add Vitality",
-            "Add Luck"
+            "Add_Strength",
+            "Add_Agility",
+            "Add_Vitality",
+            "Add_Luck"
             ]
-        while True:
-            self.dialog("You found an inn and decided to stay for a night")
-            self.dialog("You can choose to increase your stats  once by"
-                        + " spending twice the amount of current stats")
-            self.dialog("If you don't have enough ducat, the choice is"
-                        + " invalid and nothing happen")
-            for idx, i_option in enumerate(i_options):
-                self.dialog(f"{idx+1} : {i_option} ")
-            choice = input()
-            for idx, i_option in enumerate(i_options):
-                if choice == str(idx+1) or choice.lower() == i_option.lower():
-                    return i_option
+        self.say("You found an inn and decided to stay for a night")
+        self.say("You can choose to increase your stats  once by"
+                 + " spending twice the amount of current stats")
+        self.say("If you don't have enough ducat, the choice is"
+                 + " invalid and nothing happen")
+        for idx, i_option in enumerate(i_options):
+            self.say(f"{idx+1} : {i_option} ")
+        self.choice("What will you improve?", i_options, self.bot.post_inn)
 
 
 class Nothing(Event):
@@ -263,7 +256,7 @@ class Nothing(Event):
 
     def enter(self, player):
         """Start the event."""
-        self.dialog("Nothing happen, you have a good lonely camping.")
+        self.say("Nothing happen, you have a good lonely camping.")
         player.stage += 1
         return "End Stage"
 
@@ -273,16 +266,16 @@ class Add_status(Event):
 
     def enter(self, player, option):
         """Start the event."""
-        if option == "Add Strength":
+        if option == "Add_Strength":
             player.add_str()
-        elif option == "Add Agility":
+        elif option == "Add_Agility":
             player.add_agi()
-        elif option == "Add Vitality":
+        elif option == "Add_Vitality":
             player.add_vit()
-        elif option == "Add Luck":
+        elif option == "Add_Luck":
             player.add_lck()
         else:
-            print("this is a bug")
+            self.bot.say("this is a bug")
         player.healed(float("inf"))
         player.stage += 1
         return "End Stage"
@@ -296,7 +289,7 @@ class Fight(Event):
         money_earn = int(opponent.lv * (1+rng_bless(player.lck)/100))
         exp_earn = int(money_earn/2)
         while True:
-            self.dialog("You choose to attack the monster")
+            self.say("You choose to attack the monster")
             roll = rng_bless(99)
             multiplier_p = 1
             multiplier_o = 1
@@ -310,8 +303,8 @@ class Fight(Event):
             damage_by_mons = int(opponent.base_atk
                                  * (1 * rng_bless(10)/10) * multiplier_o)
 
-            self.dialog(f"You attack the monster by {damage_by_player},"
-                        + f"but get counter by {damage_by_mons}")
+            self.say(f"You attack the monster by {damage_by_player},"
+                     + f"but get counter by {damage_by_mons}")
             opponent.damage(damage_by_player)
 
             player.damage(damage_by_mons)
@@ -329,9 +322,9 @@ class Give_Up(Event):
 
     def enter(self, player):
         """Start the event."""
-        self.dialog("When you decided to give up, even God cannot save you")
-        self.dialog("Your opponent decided to not to kill you")
-        self.dialog("Alas you still died from your own cowardice.")
+        self.say("When you decided to give up, even God cannot save you")
+        self.say("Your opponent decided to not to kill you")
+        self.say("Alas you still died from your own cowardice.")
         player.health = 0
         return "End Stage"
 
@@ -352,7 +345,7 @@ class See_Stat(Event):
             "ducat": player.ducat,
             "exp": player.exp
         }
-        print(yaml.dump(the_stat))
+        self.bot.say(yaml.dump(the_stat))
 
 
 class Start(Event):
@@ -361,8 +354,8 @@ class Start(Event):
     def enter(self, player):
         """Start the event."""
         player.stage += 1
-        self.dialog("Just another trashy RPG game")
-        self.dialog("Don't expect much, mkay?")
+        self.say("Just another trashy RPG game")
+        self.say("Don't expect much, mkay?")
         return "End Stage"
 
 
@@ -371,34 +364,47 @@ class Died(Event):
 
     def enter(self, player):
         """Start the event."""
-        self.dialog("What a shame, you are dead")
-        self.dialog(f"You have reach {player.stage} stage, congrat?!!")
+        self.say("What a shame, you are dead")
+        self.say(f"You have reach {player.stage} stage, congrat?!!")
         return "GAME OVER"
 
 
-class Game(Event):
+class Rng(Game):
     """The actual game loop."""
 
-    def __init__(self):
+    @classmethod
+    def game_name(self):
+        """Get unique game name used for selection no spaces."""
+        return "rng"
+
+    @classmethod
+    def description(self):
+        """Get the game description."""
+        return "A self proclaimed trashy rng."
+
+    def welcome(self):
+        """Get a welcome message."""
+        return "RNG\nYou must love pointlessly trawling through games."
+
+    def __init__(self, bot, chat_id):
         """Init the game."""
+        super().__init__(bot, chat_id)
+
         self.battle_choices = [
-            Fight(),
-            Give_Up(),
+            Fight(self),
+            Give_Up(self),
         ]
         self.stage_setting = [
-            Inn(),
-            Battle(),
-            Nothing()
+            Inn(self),
+            Battle(self),
+            Nothing(self)
 
         ]
 
-        self.start = Start()
-        self.died = Died()
+        self.start = Start(self)
+        self.died = Died(self)
 
-    def play(self):
-        """Time to play."""
-        load_from = Path("savedata.yml")
-        int_data = {
+        data = {
             "name": 'gimme a name',
             "lv": 1,
             "health": 25,
@@ -409,70 +415,82 @@ class Game(Event):
             "ducat": 0,
             "exp": 0
         }
-        if load_from.exists():
-            player_data = load_from.read_text()
-            data = yaml.safe_load(player_data)
-        else:
-            data = int_data
-        player = Player()
         list_of_stat = ("name", "lv", "str", "vit", "agi", "lck", "ducat",
                         "exp")
+        self.player = Player(self)
         for i in list_of_stat:
-            setattr(player, i, data[i])  # set the player stat
+            setattr(self.player, i, data[i])  # set the player stat
+
+    def play(self):
+        """Time to play."""
         start = self.start
+        player = self.player
         event_result = start.enter(player)
+        self.event_result = event_result
         player.healed(float("inf"))
         if player.name == 'gimme a name':
-            new_name = input("Please enter a new name")
-            player.set_name(new_name)
-        while event_result == "End Stage":
+            self.open_answer("Please enter a new name", self.stage2)
+        else:
+            self.event_loop()
+
+    def stage2(self, new_name):
+        """Stage 2 we set the name."""
+        self.player.set_name(new_name)
+        self.event_loop()
+
+    def event_loop(self):
+        """Start the loop."""
+        player = self.player
+        if self.event_result == "End Stage":
             path = rng_bless(9)
             stage_number = player.stage
             if path == 9:
-                inn_choice = Inn().enter(player)  # inn
-                battle_choice = "nothing"
-                Add_status().enter(player, inn_choice)
+                Inn(self).enter(player)  # inn
             elif path >= 1:
-                opponent = Monster(stage_number)
-                battle_choice = Battle().enter(player, opponent)  # mons=stage
+                self.opponent = Monster(stage_number)
+                Battle(self).enter(player, self.opponent)  # mons=stage
             elif path == 0:
                 if player.stage % 5 == 0:
-                    opponent = Boss(stage_number)
+                    self.opponent = Boss(stage_number)
                     # boss_fight
-                    battle_choice = Battle().enter(player, opponent)
+                    Battle(self).enter(player, self.opponent)
                 else:
-                    Nothing().enter(player)
-                    battle_choice = "nothing"
-            if battle_choice == 'Fight':
-                Fight().enter(player, opponent)
-            elif battle_choice == 'Give Up':
-                Give_Up().enter(player)
-            if player.health <= 0:
-                event_result = Died().enter(player)
-            else:
-                self.dialog(f"Your pointless endless journey continue")
-                print(f"The current stage is {player.stage}")
+                    Nothing(self).enter(player)
+                    self.battle_choice = "nothing"
+                    self.post_events()
 
-            if event_result == "GAME OVER":
-                self.dialog("Saving in progress...")
-                self.dialog("Have a better luck next time")
-                self.dialog("Hail Great RNG God!!!")
-                """
-                Add saving mechanism here
-                """
-                save_data = {
-                    "name": player.name,
-                    "lv": player.lv,
-                    "str": player.str,
-                    "vit": player.vit,
-                    "agi": player.agi,
-                    "lck": player.lck,
-                    "ducat": player.ducat,
-                    "exp": player.exp
-                    }
-                text_data = yaml.dump(save_data)
-                save_to = Path("savedata.yml")
-                save_to.write_text(text_data)
+    def post_inn(self, inn_choice):
+        """Post inn event."""
+        self.battle_choice = "nothing"
+        Add_status(self).enter(self.player, inn_choice)
+        self.post_events()
 
+    def post_battle(self, battle_choice):
+        """Start the actual battle."""
+        if battle_choice == 'Fight':
+            Fight(self).enter(self.player, self.opponent)
+        elif battle_choice == 'Give_Up':
+            Give_Up(self).enter(self.player)
+        elif battle_choice == "See_Stat":
+            See_Stat(self).enter(self.player)
+            Battle(self).enter(self.player, self.opponent)
+            return
+        self.post_events()
 
-game = Game()
+    def post_events(self):
+        """Post event happening."""
+        event_result = self.event_result
+        if self.player.health <= 0:
+            event_result = Died(self).enter(self.player)
+        else:
+            self.say(f"Your pointless endless journey continue")
+            self.say(f"The current stage is {self.player.stage}")
+
+        if event_result == "GAME OVER":
+            self.say("Your progress will be kept for next play"
+                     + " through... Just use /play again (Stats lost if you"
+                     + " pick another game from the main menu.)")
+            self.say("Have a better luck next time")
+            self.say("Hail Great RNG God!!!")
+        self.event_result = event_result
+        self.event_loop()
