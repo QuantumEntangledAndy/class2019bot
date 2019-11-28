@@ -81,11 +81,12 @@ def command_recieved(update, context):
             if '/' + game_i.game_name() == command:
                 users[chat_id] = game_i(context.bot, chat_id)
                 game = users[chat_id]
-                message = "You choose to play..\n"
-                message += '\n=================='
+                message = "You have chosen to play..\n"
+                message += '\n==================\n'
                 message += game.welcome()
-                message += '\n=================='
-                message += '\n\nTo begin use /play'
+                message += '\n==================\n'
+                message += '\nTo begin use /play'
+                message += '\nTo select another use /start'
                 update.message.reply_text(message,
                                           **no_keyboard())
 
