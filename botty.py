@@ -12,6 +12,7 @@ from pathlib import Path
 from games.testgame import TestGame
 from games.abyss import Abyss
 from games.jeff import Jeff
+from games.love import Love
 
 import logging
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
@@ -28,7 +29,8 @@ users = {}
 games = [
     TestGame,
     Abyss,
-    Jeff
+    Jeff,
+    Love
 ]
 
 
