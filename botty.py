@@ -14,6 +14,7 @@ from games.abyss import Abyss
 from games.jeff import Jeff
 from games.love import Love
 from games.rng import Rng
+from games.jungle import Jungle
 
 import logging
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
@@ -32,7 +33,8 @@ games = [
     Abyss,
     Jeff,
     Love,
-    Rng
+    Rng,
+    Jungle
 ]
 
 

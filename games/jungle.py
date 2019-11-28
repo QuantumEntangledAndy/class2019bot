@@ -4,142 +4,187 @@ The Jungle Survial Game.
 Authours:  Thitaporn Petchpadoong
 """
 
-start = True
+from game import Game
 
 
-def gameOver():
-    print("Game Over. Start Again.")
-    print("=" * 95)
+class Jungle(Game):
+    """The jungle game."""
 
-def stage1():
-    print("=" * 95)
-    print("Welcome to the Jungle!!!")
-    print("There are many dangerous creatures such as monkeys, hippos, tigers, and cannibals.")
-    print("In order to survive in this jungle, you need to build a house to protect yourself from them.")
-    score = 0
-    print("Level 1: Build a house that will keep you away from the dangerous monkeys.")
-    print("1. wood")
-    print("2. hay")
-    print("3. clay")
-    answer = input("your material: ")
-    answer = answer.lower()
-    if answer == "wood":
-        score += 3
-    elif answer == "hay":
-        score += 1
-    elif answer == "clay":
-        score += 2
-    else:
-        score += 0
+    @classmethod
+    def game_name(self):
+        """Get unique game name used for selection no spaces."""
+        return "jungle"
 
-    if score == 3:
-        stage2()
-    else:
-        gameOver()
+    @classmethod
+    def description(self):
+        """Get the game description."""
+        return "Brave all the trials the jungle has to throw at you."
 
-def stage2():
-    score = 0
-    print("Level 2: Build a house that will keep you away from the aggressive hippos.")
-    print("1. brick")
-    print("2. wood")
-    print("3. rock")
-    answer = input("your material: ")
-    answer = answer.lower()
-    if answer == "brick":
-        score += 3
-    elif answer == "wood":
-        score += 1
-    elif answer == "rock":
-        score += 2
-    else:
-        score += 0
+    def welcome(self):
+        """Get a welcome message."""
+        return ("Jungle!\nWhere monkies are the least of your worries\n"
+                + "Authours:  Thitaporn Petchpadoong")
 
-    if score == 3:
-        stage3()
-    else:
-        gameOver()
-def stage3():
-    score = 0
-    print("Level 3.1 Build a house that will keep you away from the hungry tigers.")
-    print("1. stainless steel")
-    print("2. brick")
-    print("3. concrete")
-    print("4. gold")
-    answer = input("your material:")
-    answer = answer.lower()
-    if answer == "stainless steel":
-        score += 4
-    elif answer == "brick":
-        score += 1
-    elif answer == "concrete":
-        score += 2
-    elif answer == "gold":
-        score += 3
-    else:
-        score += 0
-    print("Level 3.2 In order to survive from these hungry tigers, you need to choose your weapon.")
-    print("1. saucepan")
-    print("2. spears")
-    print("3. bacon")
-    answer = input("your weapon:")
-    answer = answer.lower()
-    if answer == "spears":
-        score += 3
-    elif answer == "saucepan":
-        score += 1
-    elif answer == "bacon":
-        score += 10
-    else:
-        score += 0
+    def play(self):
+        """Get the party started."""
+        self.stage1()
 
-    if score >= 7:
-        stage4()
-    else:
-        gameOver()
+    def gameOver(self):
+        """End of the game."""
+        self.say("Game Over. Start Again.")
+        self.say("=" * 95)
 
-def stage4():
-    global start
-    score = 0
-    print("Level 4.1 Build a house that will keep you away from the savage cannibals")
-    print("1. concrete")
-    print("2. glass")
-    print("3. stainless steel")
-    print("4. gold")
-    answer = input("your material:")
-    answer = answer.lower()
-    if answer == "concrete":
-        score += 2
-    elif answer == "glass":
-        score += 1
-    elif answer == "gold":
-        score += 3
-    elif answer == "stainless steel":
-        score += 4
-    else:
-        score += 0
+    def stage1(self):
+        """Play stage 1."""
+        self.say("=" * 95)
+        self.say("Welcome to the Jungle!!!")
+        self.say("There are many dangerous creatures such as monkeys,"
+                 + " hippos, tigers, and cannibals.")
+        self.say("In order to survive in this jungle, you need to build"
+                 + " a house to protect yourself from them.")
+        self.score = 0
+        self.say("Level 1: Build a house that will keep you away from"
+                 + " the dangerous monkeys.")
+        self.say("1. wood")
+        self.say("2. hay")
+        self.say("3. clay")
+        self.choice("Your material?", ['wood', 'hay', 'clay'], self.answer1)
 
-    print("Level 4.2 In order to survive from these save cannibals, you need to choose your weapon.")
-    print("1. carrots")
-    print("2. shotguns")
-    print("3. tennis bat")
-    answer = input("your weapon:")
-    answer = answer.lower()
-    if answer == "carrots":
-        score += 1
-    elif answer == "shotguns":
-        score += 10
-    elif answer == "tennis bat":
-        score += 2
-    else:
-        score += 0
-    if score >= 6:
-        print("Congrats! You win")
-        start = False
-    else:
-        gameOver()
+    def answer1(self, answer):
+        """Answer for stage1."""
+        answer = answer.lower()
+        if answer == "wood":
+            self.score += 3
+        elif answer == "hay":
+            self.score += 1
+        elif answer == "clay":
+            self.score += 2
+        else:
+            self.score += 0
 
+        if self.score == 3:
+            self.stage2()
+        else:
+            self.gameOver()
 
+    def stage2(self):
+        """Play stage2."""
+        self.score = 0
+        self.say("Level 2: Build a house that will keep you away"
+                 + " from the aggressive hippos.")
+        self.say("1. brick")
+        self.say("2. wood")
+        self.say("3. rock")
+        self.choice("Your material?", ['brick', 'wood', 'rock'], self.answer2)
 
+    def answer2(self, answer):
+        """Answer to stage2."""
+        if answer == "brick":
+            self.score += 3
+        elif answer == "wood":
+            self.score += 1
+        elif answer == "rock":
+            self.score += 2
+        else:
+            self.score += 0
 
-while start:
-    stage1()
+        if self.score == 3:
+            self.stage3()
+        else:
+            self.gameOver()
+
+    def stage3(self):
+        """Play stage3."""
+        self.score = 0
+        self.say("Level 3.1 Build a house that will keep you away"
+                 + " from the hungry tigers.")
+        self.say("1. stainless steel")
+        self.say("2. brick")
+        self.say("3. concrete")
+        self.say("4. gold")
+        self.choice("Your material?", ['stainless_steel', 'brick',
+                                       'concrete', 'gold'], self.answer3_1)
+
+    def answer3_1(self, answer):
+        """Answer for stage3.1."""
+        if answer == "stainless_steel":
+            self.score += 4
+        elif answer == "brick":
+            self.score += 1
+        elif answer == "concrete":
+            self.score += 2
+        elif answer == "gold":
+            self.score += 3
+        else:
+            self.score += 0
+        self.say("Level 3.2 In order to survive from these hungry tigers,"
+                 + "you need to choose your weapon.")
+        self.say("1. saucepan")
+        self.say("2. spears")
+        self.say("3. bacon")
+        self.choice("Your weapon?", ['saucepan', 'spears', 'bacon'],
+                    self.answer3_2)
+
+    def answer3_2(self, answer):
+        """Answer for stage 3.2."""
+        if answer == "spears":
+            self.score += 3
+        elif answer == "saucepan":
+            self.score += 1
+        elif answer == "bacon":
+            self.score += 10
+        else:
+            self.score += 0
+
+        if self.score >= 7:
+            self.stage4()
+        else:
+            self.gameOver()
+
+    def stage4(self):
+        """Play stage4."""
+        self.score = 0
+        self.say("Level 4.1 Build a house that will keep you away from the"
+                 + " savage cannibals")
+        self.say("1. concrete")
+        self.say("2. glass")
+        self.say("3. stainless steel")
+        self.say("4. gold")
+        self.choice("Your material?", ['concrete', 'glass', 'stainless_steel',
+                                       'gold'], self.answer4_1)
+
+    def answer4_1(self, answer):
+        """Answer for 4.1."""
+        if answer == "concrete":
+            self.score += 2
+        elif answer == "glass":
+            self.score += 1
+        elif answer == "gold":
+            self.score += 3
+        elif answer == "stainless_steel":
+            self.score += 4
+        else:
+            self.score += 0
+
+        self.say("Level 4.2 In order to survive from these save cannibals,"
+                 + " you need to choose your weapon.")
+        self.say("1. carrots")
+        self.say("2. shotguns")
+        self.say("3. tennis bat")
+        self.choice("Your weapon?", ['carrots', 'shotguns', 'tennis_bat'],
+                    self.answer4_2)
+
+    def answer4_2(self, answer):
+        """Answer for 4.2."""
+        if answer == "carrots":
+            self.score += 1
+        elif answer == "shotguns":
+            self.score += 10
+        elif answer == "tennis_bat":
+            self.score += 2
+        else:
+            self.score += 0
+        if self.score >= 6:
+            self.say("Congrats! You win")
+        else:
+            self.gameOver()
