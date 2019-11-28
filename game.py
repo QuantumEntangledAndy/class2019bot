@@ -36,8 +36,9 @@ class Game():
 
     def say(self, message):
         """Say something in the chat."""
-        self.bot.send_message(self.chat_id, message,
-                              reply_markup=ReplyKeyboardRemove())
+        if message.strip():  # Check the message is not whitespace/blank
+            self.bot.send_message(self.chat_id, message,
+                                  reply_markup=ReplyKeyboardRemove())
 
     def choice(self, message="What do you choose?", options=[], callbacks=[]):
         """Give the player some choices."""
