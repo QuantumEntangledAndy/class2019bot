@@ -4,6 +4,15 @@ The Trashy RPG Game.
 Authours:  Pimsucha Kanjchanapoomi,  Saithan Srichantamit
 """
 
+__author__ = "Pimsucha Kanjchanapoomi,  Saithan Srichantamit"
+__copyright__ = "Copyright 2019, Chulalongkorn University"
+__credits__ = ["Pimsucha Kanjchanapoomi",  "Saithan Srichantamit"]
+__license__ = "AGPL"
+__version__ = "1.0.0"
+__maintainer__ = "Dr Andrew King"
+__email__ = "sheepchaan@gmail.com"
+__status__ = "Production"
+
 import yaml
 import random
 
@@ -384,7 +393,8 @@ class Rng(Game):
 
     def welcome(self):
         """Get a welcome message."""
-        return "RNG\nYou must love pointlessly trawling through games."
+        return ("RNG\nYou must love pointlessly trawling through games.\n"
+                + "Created by " + __author__)
 
     def __init__(self, bot, chat_id):
         """Init the game."""

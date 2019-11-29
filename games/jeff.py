@@ -1,9 +1,17 @@
 """
-
 Evil jeff Game.
 
-Authours:  Kasin Onprasop
+The most evil name.
 """
+
+__author__ = "Kasin Onprasop,  Poomipat Laorsatiankul"
+__copyright__ = "Copyright 2019, Chulalongkorn University"
+__credits__ = ["Kasin Onprasop",  "Poomipat Laorsatiankul"]
+__license__ = "AGPL"
+__version__ = "1.0.0"
+__maintainer__ = "Dr Andrew King"
+__email__ = "sheepchaan@gmail.com"
+__status__ = "Production"
 
 import random
 from game import Game
@@ -344,7 +352,8 @@ class Jeff(Game):
 
     def welcome(self):
         """Get a welcome message."""
-        return "Welcome to Jeff!\nThe most fearsome name imaginable!"
+        return ("Welcome to Jeff!\nThe most fearsome name imaginable!\n"
+                + "Created by " + __author__)
 
     def play(self):
         """Start the game."""

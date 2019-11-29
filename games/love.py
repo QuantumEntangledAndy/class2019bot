@@ -4,6 +4,15 @@ The Dating Game.
 Authours:  Nattamon Panichakul,
 """
 
+__author__ = "Nattamon Panichakul"
+__copyright__ = "Copyright 2019, Chulalongkorn University"
+__credits__ = ["Nattamon Panichakul"]
+__license__ = "AGPL"
+__version__ = "1.0.0"
+__maintainer__ = "Dr Andrew King"
+__email__ = "sheepchaan@gmail.com"
+__status__ = "Production"
+
 from game import Game
 
 
@@ -74,9 +83,7 @@ class Love(Game):
     def welcome(self):
         """Get a welcome message."""
         return ("Love, the dating game.\n"
-                + "This game was created by...\n"
-                + "Nattamon Panichakul,\n"
-                + "We hope you enjoy it")
+                + "Created by " + __author__)
 
     def play(self):
         """Start playing."""

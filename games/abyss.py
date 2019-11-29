@@ -1,10 +1,18 @@
 """
 Abyss Game.
 
-Authours: Kevin,  Yosita Phailomwong,  Kornkanok  Paramesirikuntorn
-
 Adapted to play on telegram by Andrew W King
 """
+
+__author__ = "Kevin Yuen,  Yosita Phailomwong,  Kornkanok  Paramesirikuntorn"
+__copyright__ = "Copyright 2019, Chulalongkorn University"
+__credits__ = ["Kevin Yuen",  "Yosita Phailomwong",
+               "Kornkanok  Paramesirikuntorn"]
+__license__ = "AGPL"
+__version__ = "1.0.0"
+__maintainer__ = "Dr Andrew King"
+__email__ = "sheepchaan@gmail.com"
+__status__ = "Production"
 
 from game import Game
 
@@ -51,8 +59,8 @@ class Abyss(Game):
 
     def welcome(self):
         """Get a welcome message."""
-        return """Welcome to quester
-        Created by Kevin,  Yosita Phailomwong,  Kornkanok  Paramesirikuntorn"""
+        return ("Abyss\nBe your ladies white knight\n"
+                + "Created by " + __author__)
 
     def play(self):
         """Start playing."""

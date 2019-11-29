@@ -1,8 +1,17 @@
 """
 The apocalypse game.
 
-Authours: Surawat Chukaew
+Authours: Surawat Chukae,  Watcharaphol Vongnoi
 """
+
+__author__ = "Surawat Chukae,  Watcharaphol Vongnoi"
+__copyright__ = "Copyright 2019, Chulalongkorn University"
+__credits__ = ["Surawat Chukae",  "Watcharaphol Vongnoi"]
+__license__ = "AGPL"
+__version__ = "2.2.0"
+__maintainer__ = "Dr Andrew King"
+__email__ = "sheepchaan@gmail.com"
+__status__ = "Production"
 
 # Protoype 2.2 final
 import random
@@ -534,8 +543,8 @@ class Apocalypse(Game):
 
     def welcome(self):
         """Get a welcome message."""
-        return """Apocalypse,
-    created by: Surawat Chukaew"""
+        return ("Apocalypse\nThe end of the world. Zombies included\n"
+                + "Created by " + __author__)
 
     def play(self):
         """Start playing."""

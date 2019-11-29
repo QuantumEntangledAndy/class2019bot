@@ -4,6 +4,16 @@ The Jungle Survial Game.
 Authours:  Thitaporn Petchpadoong,  Nakamol Sansuktaweesub
 """
 
+__author__ = ("Thitaporn Petchpadoong,  Nakamol Sansuktaweesub,"
+              + " Sarisa Keittivuti")
+__copyright__ = "Copyright 2019, Chulalongkorn University"
+__credits__ = ["Thitaporn Petchpadoong",  "Nakamol Sansuktaweesub"]
+__license__ = "AGPL"
+__version__ = "1.0.0"
+__maintainer__ = "Dr Andrew King"
+__email__ = "sheepchaan@gmail.com"
+__status__ = "Production"
+
 from game import Game
 
 
@@ -23,8 +33,7 @@ class Jungle(Game):
     def welcome(self):
         """Get a welcome message."""
         return ("Jungle!\nWhere monkies are the least of your worries\n"
-                + "Authours:   Thitaporn Petchpadoong,"
-                + " Nakamol Sansuktaweesub")
+                + "Created by " + __author__)
 
     def play(self):
         """Get the party started."""
