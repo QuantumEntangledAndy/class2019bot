@@ -5,9 +5,9 @@ Time machines are nothing but trouble.
 """
 
 
-__author__ = "Ranvir Koknutphongchai"
+__author__ = "Ranvir Koknutphongchai, Porsuk Phlalop"
 __copyright__ = "Copyright 2019, Chulalongkorn University"
-__credits__ = ["Ranvir Koknutphongchai"]
+__credits__ = ["Ranvir Koknutphongchai", "Porsuk Phlalop"]
 __license__ = "AGPL"
 __version__ = "1.0.0"
 __maintainer__ = "Dr Andrew King"
