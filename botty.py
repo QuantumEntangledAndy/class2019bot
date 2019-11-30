@@ -18,6 +18,7 @@ from games.jungle import Jungle
 from games.apocalypse import Apocalypse
 from games.mathspirit import MathSpirit
 from games.momma import Momma
+from games.snake import Snake
 
 import logging
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
@@ -41,6 +42,7 @@ games = [
     Apocalypse,
     MathSpirit,
     Momma,
+    Snake,
 ]
 
 
