@@ -13,186 +13,263 @@ __maintainer__ = "Dr Andrew King"
 __email__ = "sheepchaan@gmail.com"
 __status__ = "Production"
 
-
-def question(level, prob):
-    """Print the question."""
-    print("Level " + str(level) + ": " + prob + " = ?")
+from game import Game
 
 
-def bonus():
-    """Do the bonus question."""
-    global hp
-    q = ["What is the capital city of Thailand?",
-         "What clothing is always sad?",
-         "What two words contain thousands of letters?"]
-    c = [["a: Bangkok ", "b: Phuket", "c: Krabi", "d:Pattaya"],
-         ["a:pajamas", "b:blue jean", "c:skirt", "d:socks"],
-         ["a: let ter", "b: thou sand", "c:post office", "d:good luck"]]
-    ans = ['a', 'b', 'c']
-    global wrong
-    print("Bonus", str(wrong) + ": ", q[wrong - 1], "  = ?")
-    for i in range(4):
-        print(c[wrong - 1][i])
-    ch = input("Answer: ")
-    if str(ch) == ans[wrong - 1]:
-        hp += 1
-        print("Congrats, you won a bonus question. HP : ", hp)
-    else:
-        hp -= 1
-        wrong += 1
+class Quiz(Game):
+    """The quiz game."""
 
+    @classmethod
+    def game_name(self):
+        """Get unique game name used for selection no spaces."""
+        return "quiz"
 
-def alive():
-    """Check if player is still here."""
-    if (hp == 0):
-        return False
-    return True
+    @classmethod
+    def description(self):
+        """Get the game description."""
+        return ("Play a simple quiz.")
 
+    def welcome(self):
+        """Get a welcome message."""
+        return ("Quiz\nA simple quiz to test your brain.\n"
+                + "Created by " + __author__)
 
-def choice(a, b, c, d):
-    """Show the choices."""
-    global hp, wrong
-    print("A: " + str(a))
-    print("B: " + str(b))
-    print("C: " + str(c))
-    print("D: " + str(d))
+    def question(self, level, prob):
+        """self.say the question."""
+        self.say("Level " + str(level) + ": " + prob + " = ?")
 
-
-def check(ch, ans):
-    """Check the correct answer."""
-    global hp, wrong
-    if str(ch) == ans:
-        print("Congrats HP : ", hp)
-    else:
-        hp -= 1
-        print("Wrong! You have ", hp, "HP left")
-    if hp == 1 and wrong < 3:
-        wrong += 1
-        bonus()
-
-
-begin = ''
-finished = False
-while(begin != 'start'):
-    print("(Instructions)")
-    print("1.You have 5 chances")
-    print("2.If your live is 3, you will have chance to answer bonus question")
-    print("3.If your live is 0 = GAME OVER")
-    begin = input("Type [start] to begin a game: ")
-
-print("------START------")
-while (not finished):
-    hp = 5
-    wrong = 0
-    question(1, "Which country produce most copper?")
-    choice('China', 'Thailand', 'Brazil', 'USA')
-    ch = input("Answer: ")
-    check(ch, 'd')
-    if (not alive()):
-        print('You died!')
-        op = input('Do you want to restart(y/n) ? ')
-        if op == 'y':
-            continue
+    def bonus(self):
+        """Do the bonus question."""
+        if self.bonus_num >= 0 and self.bonus_num < 3:
+            q = ["What is the capital city of Thailand?",
+                 "What clothing is always sad?",
+                 "What two words contain thousands of letters?"]
+            c = [["a: Bangkok ", "b: Phuket", "c: Krabi", "d:Pattaya"],
+                 ["a:pajamas", "b:blue jean", "c:skirt", "d:socks"],
+                 ["a: let ter", "b: thou sand", "c:post office", "d:good luck"]
+                 ]
+            self.say(f"Bonus {self.bonus_num+1:d}: {q[self.bonus_num]} = ?")
+            for i in range(4):
+                self.say(c[self.bonus_num][i])
+            self.choice("Answer?", ['a', 'b', 'c', 'd'], self.bonus_check)
         else:
-            break
-    question(2, "62-19+37")
-    choice(70, 80, 90, 100)
-    ch = input("Answer: ")
-    check(ch, 'b')
-    if (not alive()):
-        print('You died!')
-        op = input('Do you want to restart(y/n) ? ')
-        if op == 'y':
-            continue
+            self.next_question()
+
+    def bonus_check(self, ch):
+        """Check the bonus for correctness."""
+        ans = ['a', 'b', 'c']
+        if str(ch) == ans[self.bonus_num]:
+            self.hp += 1
+            self.say(f"Congrats, you won a bonus question. HP : {self.hp}")
         else:
-            break
-    question(3, "85+48-56")
-    choice(76, 77, 87, 97)
-    ch = input("Answer: ")
-    check(ch, 'b')
-    if (not alive()):
-        print('You died!')
-        op = input('Do you want to restart(y/n) ? ')
-        if op == 'y':
-            continue
+            self.hp -= 1
+        self.bonus_num += 1
+        self.next_question()
+
+    def alive(self):
+        """Check if player is still here."""
+        if (self.hp == 0):
+            return False
+        return True
+
+    def show_choice(self, a, b, c, d):
+        """Show the self.show_choices."""
+        self.say("A: " + str(a))
+        self.say("B: " + str(b))
+        self.say("C: " + str(c))
+        self.say("D: " + str(d))
+
+    def check(self, ch, ans):
+        """Check the correct answer."""
+        if str(ch) == ans:
+            self.say(f"Congrats HP : {self.hp}")
         else:
-            break
-    question(4, "83-45+37")
-    choice(75, 76, 85, 86)
-    ch = input("Answer: ")
-    check(ch, 'a')
-    if (not alive()):
-        print('You died!')
-        op = input('Do you want to restart(y/n) ? ')
-        if op == 'y':
-            continue
+            self.hp -= 1
+            self.say(f"Wrong! You have {self.hp} HP left")
+        if self.hp == 1 and self.bonus_num < 3:
+            self.bonus()
         else:
-            break
-    question(5, "91-47-18")
-    choice(25, 26, 35, 36)
-    ch = input("Answer: ")
-    check(ch, 'b')
-    if (not alive()):
-        print('You died!')
-        op = input('Do you want to restart(y/n) ? ')
-        if op == 'y':
-            continue
-        else:
-            break
-    question(6, "82-15+78")
-    choice(125, 135, 145, 155)
-    ch = input("Answer: ")
-    check(ch, 'c')
-    if (not alive()):
-        print('You died!')
-        op = input('Do you want to restart(y/n) ? ')
-        if op == 'y':
-            continue
-        else:
-            break
-    question(7, "36+78-58")
-    choice(46, 56, 66, 76)
-    ch = input("Answer: ")
-    check(ch, 'b')
-    if (not alive()):
-        print('You died!')
-        op = input('Do you want to restart(y/n) ? ')
-        if op == 'y':
-            continue
-        else:
-            break
-    question(8, "61-36+48")
-    choice(71, 73, 75, 77)
-    ch = input("Answer: ")
-    check(ch, 'b')
-    if (not alive()):
-        print('You died!')
-        op = input('Do you want to restart(y/n) ? ')
-        if op == 'y':
-            continue
-        else:
-            break
-    question(9, "45+68+37")
-    choice(150, 160, 170, 180)
-    ch = input("Answer: ")
-    check(ch, 'a')
-    if (not alive()):
-        print('You died!')
-        op = input('Do you want to restart(y/n) ? ')
-        if op == 'y':
-            continue
-        else:
-            break
-    question(10, "91-23+15")
-    choice(80, 81, 82, 83)
-    ch = input("Answer: ")
-    check(ch, 'd')
-    if (not alive()):
-        print('You died!')
-        op = input('Do you want to restart(y/n) ? ')
-        if op == 'y':
-            continue
-        else:
-            break
-    print('Congratulations! Game Completed!')
-    finished = True
+            self.next_question()
+
+    def play(self):
+        """Play the quiz."""
+        self.say("(Instructions)")
+        self.say("1.You have 5 chances")
+        self.say("2.If your live is 3, you will have chance to answer"
+                 + " bonus question")
+        self.say("3.If your live is 0 = GAME OVER")
+        self.choice("Type /begin to begin the game", ['begin'], self.begin)
+
+    def begin(self, result=None):
+        """Begin the quiz."""
+        self.hp = 5
+        self.bonus_num = 0
+        self.question1()
+
+    def question1(self, result=None):
+        """Ask question 1."""
+        self.question(1, "Which country produce most copper?")
+        self.show_choice('China', 'Thailand', 'Brazil', 'USA')
+        self.choice("Answer: ", ['a', 'b', 'c', 'd'], self.answer1)
+
+    def answer1(self, ch):
+        """Answer this question."""
+        self.next_question = self.question2
+        self.check(ch, 'd')
+
+    def question2(self, result=None):
+        """Ask question 2."""
+        if (not self.alive()):
+            self.say('You died!')
+            self.choice('Do you want to restart(y/n) ?', ['yes', 'no'],
+                        [self.begin, self.give_up])
+            return
+        self.question(2, "62-19+37")
+        self.show_choice(70, 80, 90, 100)
+        self.choice("Answer: ", ['a', 'b', 'c', 'd'], self.answer2)
+
+    def answer2(self, ch):
+        """Answer this question."""
+        self.next_question = self.question3
+        self.check(ch, 'b')
+
+    def question3(self, result=None):
+        """Ask question 1."""
+        if (not self.alive()):
+            self.say('You died!')
+            self.choice('Do you want to restart(y/n) ?', ['yes', 'no'],
+                        [self.begin, self.give_up])
+            return
+        self.question(3, "85+48-56")
+        self.show_choice(76, 77, 87, 97)
+        self.choice("Answer: ", ['a', 'b', 'c', 'd'], self.answer3)
+
+    def answer3(self, ch):
+        """Answer this question."""
+        self.next_question = self.question4
+        self.check(ch, 'b')
+
+    def question4(self, result=None):
+        """Ask question 1."""
+        if (not self.alive()):
+            self.say('You died!')
+            self.choice('Do you want to restart(y/n) ?', ['yes', 'no'],
+                        [self.begin, self.give_up])
+            return
+        self.question(4, "83-45+37")
+        self.show_choice(75, 76, 85, 86)
+        self.choice("Answer: ", ['a', 'b', 'c', 'd'], self.answer4)
+
+    def answer4(self, ch):
+        """Answer this question."""
+        self.next_question = self.question5
+        self.check(ch, 'a')
+
+    def question5(self, result=None):
+        """Ask question 1."""
+        if (not self.alive()):
+            self.say('You died!')
+            self.choice('Do you want to restart(y/n) ?', ['yes', 'no'],
+                        [self.begin, self.give_up])
+            return
+        self.question(5, "91-47-18")
+        self.show_choice(25, 26, 35, 36)
+        self.choice("Answer: ", ['a', 'b', 'c', 'd'], self.answer5)
+
+    def answer5(self, ch):
+        """Answer this question."""
+        self.next_question = self.question6
+        self.check(ch, 'b')
+
+    def question6(self, result=None):
+        """Ask question 1."""
+        if (not self.alive()):
+            self.say('You died!')
+            self.choice('Do you want to restart(y/n) ?', ['yes', 'no'],
+                        [self.begin, self.give_up])
+            return
+        self.question(6, "82-15+78")
+        self.show_choice(125, 135, 145, 155)
+        self.choice("Answer: ", ['a', 'b', 'c', 'd'], self.answer6)
+
+    def answer6(self, ch):
+        """Answer this question."""
+        self.next_question = self.question7
+        self.check(ch, 'c')
+
+    def question7(self, result=None):
+        """Ask question 1."""
+        if (not self.alive()):
+            self.say('You died!')
+            self.choice('Do you want to restart(y/n) ?', ['yes', 'no'],
+                        [self.begin, self.give_up])
+            return
+        self.question(7, "36+78-58")
+        self.show_choice(46, 56, 66, 76)
+        self.choice("Answer: ", ['a', 'b', 'c', 'd'], self.answer7)
+
+    def answer7(self, ch):
+        """Answer this question."""
+        self.next_question = self.question8
+        self.check(ch, 'b')
+
+    def question8(self, result=None):
+        """Ask question 1."""
+        if (not self.alive()):
+            self.say('You died!')
+            self.choice('Do you want to restart(y/n) ?', ['yes', 'no'],
+                        [self.begin, self.give_up])
+            return
+        self.question(8, "61-36+48")
+        self.show_choice(71, 73, 75, 77)
+        self.choice("Answer: ", ['a', 'b', 'c', 'd'], self.answer8)
+
+    def answer8(self, ch):
+        """Answer this question."""
+        self.next_question = self.question9
+        self.check(ch, 'b')
+
+    def question9(self, result=None):
+        """Ask question 1."""
+        if (not self.alive()):
+            self.say('You died!')
+            self.choice('Do you want to restart(y/n) ?', ['yes', 'no'],
+                        [self.begin, self.give_up])
+            return
+        self.question(9, "45+68+37")
+        self.show_choice(150, 160, 170, 180)
+        self.choice("Answer: ", ['a', 'b', 'c', 'd'], self.answer9)
+
+    def answer9(self, ch):
+        """Answer this question."""
+        self.next_question = self.question10
+        self.check(ch, 'a')
+
+    def question10(self, result=None):
+        """Ask question 1."""
+        if (not self.alive()):
+            self.say('You died!')
+            self.choice('Do you want to restart(y/n) ?', ['yes', 'no'],
+                        [self.begin, self.give_up])
+            return
+        self.question(10, "91-23+15")
+        self.show_choice(80, 81, 82, 83)
+        self.choice("Answer: ", ['a', 'b', 'c', 'd'], self.answer10)
+
+    def answer10(self, ch):
+        """Answer this question."""
+        self.next_question = self.final
+        self.check(ch, 'd')
+
+    def final(self, result=None):
+        """Do the final stretch."""
+        if (not self.alive()):
+            self.say('You died!')
+            self.choice('Do you want to restart(y/n) ?', ['yes', 'no'],
+                        [self.begin, self.give_up])
+            return
+        self.say('Congratulations! Game Completed!')
+
+    def give_up(self, result=None):
+        """Do this on qive up."""
+        self.say("Too bad, you can try again with /play")
