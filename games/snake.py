@@ -15,13 +15,22 @@ __email__ = "sheepchaan@gmail.com"
 __status__ = "Production"
 
 import time
+
+
 class Event():
-    def __item__(self):
+    """The base event class."""
+
+    def __init__(self):
+        """Crate the event."""
         self.time_event_occured = 0
+
     def say(self, massage):
+        """Message the player."""
         time.sleep(0.5)
         print(massage)
+
     def choose(self, options):
+        """Make a choice."""
         while True:
             self.say("What will you do?")
             for idx, value in enumerate(options):
@@ -32,15 +41,21 @@ class Event():
                     return value
                 if str(idx+1) == choice:
                     return value
+
     def enter(self):
+        """Enter the event."""
         pass
 
 
 class Start(Event):
+    """The intro event."""
+
     def enter(self):
+        """Enter the event."""
         self.say("Jason wakes up in the forest with vague memory")
         self.say("He stands up and looks around himself")
-        self.say("He looks to the left and find an axe and to the right a compass")
+        self.say("He looks to the left and find an axe and to the right a"
+                 + " compass")
         answer = self.choose(["axe", "compass"])
         if answer == "axe":
             print("iI got an axe")
@@ -49,10 +64,15 @@ class Start(Event):
             print("It is gonna br useful, isn't it?")
             return "compass"
 
+
 class Anaconda(Event):
+    """The Anaconda event."""
+
     def enter(self):
+        """Enter the event."""
         self.say("After walking for a while, he hears the flow of water")
-        self.say("He feels very thirsty, so he walks steadily toward the sound")
+        self.say("He feels very thirsty, so he walks steadily toward the"
+                 + " sound")
         self.say("Suddenly, Anaconda jumps out of the river!!!")
         answer = self.choose(["runaway", "fight"])
         if answer == "runaway":
@@ -62,9 +82,14 @@ class Anaconda(Event):
             self.say("I can endure its agrassive attack, helppppp")
             return 'GAME OVER'
 
+
 class Tiger(Event):
+    """The tiger event."""
+
     def enter(self):
-        self.say("After walking for along time, Jason feels extremly exhuasted")
+        """Enter the event."""
+        self.say("After walking for along time, Jason feels extremly"
+                 + " exhuasted")
         self.say("The sky is getting darker and derker")
         self.say("Heyyy, there is a cave ahead!!, I'm gonna take a nap there")
         self.say("In the cave, there are red eyes appearing in the dark")
@@ -78,18 +103,29 @@ class Tiger(Event):
         elif answer == "cilmb the tree":
             self.say("He could get away from the tiger")
             self.say("He fell asleep, until tiger got bored and went away")
-            self.say("He gets down from the tree and uses the compass to guid him out of the forest")
+            self.say("He gets down from the tree and uses the compass to"
+                     + " guid him out of the forest")
             return "Yayyy, VICTORY"
 
+
 class Death(Event):
+    """What happens when you die."""
+
     def enter(self):
+        """Enter the event."""
         self.say("GAME OVER")
 
+
 class Victory(Event):
+    """What heppens when you win."""
+
     def enter(self):
+        """Enter the event."""
         self.say("congratulation!! You are able to to get out")
 
+
 def play():
+    """Start the actual game."""
     event = Start()
     result = event.enter()
     if result == 'axe':
@@ -109,5 +145,6 @@ def play():
             return
     else:
         raise ValueError(f"RESULT NOT HANDELLED {result}")
+
 
 play()
