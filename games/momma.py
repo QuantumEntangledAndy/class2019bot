@@ -15,7 +15,7 @@ __email__ = "sheepchaan@gmail.com"
 __status__ = "Production"
 
 import random
-import time
+from game import Game
 
 
 class Girl():
@@ -49,30 +49,22 @@ class Girl():
 class Event():
     """Base event class."""
 
-    def __init__(self):
+    def __init__(self, parent):
         """Init the events."""
         self.hard_mode = False
+        self.parent = parent
 
     def say(self, message):
         """Tell the player something, long wait."""
-        time.sleep(1.5)
-        print(message)
+        self.parent.say(message)
 
     def say2(self, message):
         """Tell the player something, short wait."""
-        time.sleep(0.5)
-        print(message)
+        self.say(message)
 
-    def choose(self, options):
+    def choice(self, message, options, callbacks):
         """Choose an option."""
-        while True:
-            self.say("Choose an option:")
-            for idx, option in enumerate(options):
-                self.say2(f"{idx+1}: {option}")
-            choice = input()
-            for idx, option in enumerate(options):
-                if choice == str(idx+1) or choice.lower() == option.lower():
-                    return option
+        self.parent.choice(message, options, callbacks)
 
     def create_girls(self):
         """Create all the girls."""
@@ -110,22 +102,17 @@ class Event():
         self.say("------------------------------")
         self.say("Please choose a difficulty. [Easy] or [Hard]")
         self.say("Note that your investigation will be harder in hard mode.")
-        while True:
-            choice = input()
-            if 'easy' in choice.lower():
-                self.hard_mode = False
-                self.say2("You choose: Easy Mode")
-                return None
-            elif 'hard' in choice.lower():
-                self.hard_mode = True
-                self.say2("You choose: Hard Mode")
-                return None
+        self.choice("Easy or hard?", ['easy', 'hard'], self.picked_difficulty)
 
-    def what_girl(self):
-        """Pick a girl to question."""
-        self.say("\nWhich girl would you like to ask?")
-        choices = self.choose(["Sarah", "Grace", "Daisy", "Nina"])
-        return choices
+    def picked_difficulty(self, choice):
+        """Apply the difficulty choice."""
+        if 'easy' in choice.lower():
+            self.hard_mode = False
+            self.say2("You choose: Easy Mode")
+        elif 'hard' in choice.lower():
+            self.hard_mode = True
+            self.say2("You choose: Hard Mode")
+        self.parent.post_difficulty()
 
     def object_name(self, name_str):
         """Get girl by name."""
@@ -148,9 +135,14 @@ class Event():
 
     def ask_q(self, name):
         """Ask the girl a question."""
-        self.say("\nWhat do you want to ask about her?")
-        choices = self.choose(["Hobby", "Field of Study", "Favourite Crusine",
-                               "Favourite Song Genre"])
+        self.name = name
+        self.choice("What do you want to ask about her?",
+                    ["Hobby", "Field of Study", "Favourite Crusine",
+                     "Favourite Song Genre"], self.answered_q)
+
+    def answered_q(self, choices):
+        """Do the answer to the question."""
+        name = self.name
         if self.hard_mode:
             answer_reveal = random.randint(0, 1)
             if answer_reveal == 0:
@@ -159,21 +151,21 @@ class Event():
                 self.say(f"[{name.name}] Why are you asking that? I don’t"
                          + " want to answer that question, sorry.")
                 self.say("[The Boy] I... I'm sorry.\n")
-                return 'Not answer'
+                self.parent.post_ask_girl_q()
         if choices == "Hobby" and not name.q_check[0]:
             name.asked_Q += 1
             self.say(f"\n[The Boy] What is your {choices.lower()}?")
             self.say(f"[{name.name}] Oh, my hobby is {name.hobby}.")
             self.say("[The Boy] Thanks for the answer.\n")
             name.q_check[0] = True
-            return name.hobby
+            self.parent.post_ask_girl_q()
         elif choices == "Field of Study" and not name.q_check[1]:
             name.asked_Q += 1
             self.say(f"\n[The Boy] What is your {choices.lower()}?")
             self.say(f"[{name.name}] I'm studying {name.field_of_study}.")
             self.say("[The Boy] Thanks for the answer.\n")
             name.q_check[1] = True
-            return name.field_of_study
+            self.parent.post_ask_girl_q()
         elif choices == "Favourite Crusine" and not name.q_check[2]:
             name.asked_Q += 1
             self.say(f"\n[The Boy] What is your {choices.lower()}?")
@@ -181,7 +173,7 @@ class Event():
                      + " That's my favourite.")
             self.say("[The Boy] Thanks for the answer.\n")
             name.q_check[2] = True
-            return name.crusine
+            self.parent.post_ask_girl_q()
         elif choices == "Favourite Song Genre" and not name.q_check[3]:
             name.asked_Q += 1
             self.say(f"\n[The Boy] What is your {choices.lower()}?")
@@ -189,43 +181,30 @@ class Event():
                      + " songs.")
             self.say("[The Boy] Thanks for the answer.\n")
             name.q_check[3] = True
-            return name.music_genre
+            self.parent.post_ask_girl_q()
         else:
             self.say("\nYou have already asked that question.")
             self.say("Try another question.")
-            return 'Not answer'
-
-    def cont(self, name, list_q):
-        """Ask what to do next."""
-        while True:
-            self.say("\nHow would you like to continue?")
-            resume = self.choose(list_q)
-            if resume == 'Ask more question about her':
-                return 'ask_q'
-            if resume == 'Ask someone else':
-                return 'what_girl'
-            if resume == 'End the investigation':
-                self.say("\nAre you sure that you have all information"
-                         + "that you needed?")
-                confirm = self.choose(["Yes", "No"])
-                if confirm == "Yes":
-                    return 'END'
+            self.parent.post_ask_girl_q()
 
     def select_girl(self):
         """Select a girl as your momma."""
-        trial = 0
-        while True:
-            self.say("\nWho do you think is your real future mother?")
-            choices = self.choose(["Sarah", "Grace", "Daisy", "Nina"])
-            if choices == self.mom.name:
-                return 'WIN'
-            else:
-                if not self.hard_mode or trial >= 1:
-                    return 'LOSE'
-                elif self.hard_mode:
-                    self.say("You choose the wrong answer.")
-                    self.say("You will have another chance to choose.")
-                    trial += 1
+        self.trial = 0
+        self.choice("Who do you think is your real future mother?",
+                    ["Sarah", "Grace", "Daisy", "Nina"], self.selected_girl)
+
+    def selected_girl(self, choices):
+        """Do the logic on the selected girl."""
+        if choices == self.mom.name:
+            self.parent.epilogue('WIN')
+        else:
+            if not self.hard_mode or self.trial >= 1:
+                self.parent.epilogue('LOSE')
+            elif self.hard_mode:
+                self.say("You choose the wrong answer.")
+                self.say("You will have another chance to choose.")
+                self.trial += 1
+                self.select_girl()
 
 
 class Story(Event):
@@ -268,8 +247,9 @@ class Story(Event):
         self.say("[The Boy] Let me jot down what I remember...\n")
         self.say2("------------")
         self.say(f"'My Mother'\n   Favorite Cuisine: {mom.crusine.title()}\n"
-                 + "  Career: {mom.career.title()}\n   Favourite Music Genre:"
-                 + " {mom.music_genre.title()}\n   Hobby: {mom.hobby.title()}")
+                 + f"  Career: {mom.career.title()}\n   Favourite Music Genre:"
+                 + f" {mom.music_genre.title()}\n   Hobby: {mom.hobby.title()}"
+                 )
         self.say2("------------")
 
     def direction(self):
@@ -353,59 +333,93 @@ class Story(Event):
                 """)
 
 
-class Game(Event):
+class Momma(Game):
     """The actual Momma game."""
+
+    @classmethod
+    def game_name(self):
+        """Get unique game name used for selection no spaces."""
+        return "momma"
+
+    @classmethod
+    def description(self):
+        """Get the game description."""
+        return ("Put the clues together and find your real momma.")
+
+    def welcome(self):
+        """Get a welcome message."""
+        return ("Momma\nThe reason why you should not step into random"
+                + " time machines\n"
+                + "Created by " + __author__)
 
     def play(self):
         """Play the game."""
-        event = Event()
-        story = Story()
+        self.event = Event(self)
+        self.story = Story(self)
 
-        event.create_girls()
-        event.common_value()
-        event.assign_mother()
+        self.event.create_girls()
+        self.event.common_value()
+        self.event.assign_mother()
 
         # Intro Part
-        story.intro()
-        event.difficulty()
-        story.mother_info(event.mom)
+        self.story.intro()
+        self.event.difficulty()
+
+    def post_difficulty(self):
+        """Play post difficulty choice."""
+        self.story.mother_info(self.event.mom)
+        self.pick_girl()
 
         # Investigation Loop Part
-        loop = "what_girl"
-        while loop == "what_girl":
-            girl_name_str = event.what_girl()
-            girl_name = event.object_name(girl_name_str)
-            story.girl_talk(girl_name)
 
-            loop = "ask_q"
-            while loop == "ask_q":
+    def pick_girl(self, result=None):
+        """Pick the girl to ask."""
+        self.choice("Which girl would you like to ask?",
+                    ["Sarah", "Grace", "Daisy", "Nina"], self.post_pick_girl)
 
-                if event.check_q(girl_name):
-                    event.ask_q(girl_name)
-                    loop = event.cont(girl_name, ["Ask more question"
-                                                  + " about her",
-                                                  "Ask someone else",
-                                                  "End the investigation"])
+    def post_pick_girl(self, girl_name_str):
+        """Pick a girl to ask."""
+        girl_name = self.event.object_name(girl_name_str)
+        self.girl_name = girl_name
+        self.story.girl_talk(girl_name)
+        self.ask_girl_q()
 
-                else:
-                    self.say("Sorry, you have already asked her 2 questions!")
-                    self.say("You can't ask each girl more than 2 questions.")
-                    loop = event.cont(girl_name, ["Ask someone else",
-                                                  "End the investigation"])
+    def ask_girl_q(self,  result=None):
+        """Ask a girl a question."""
+        girl_name = self.girl_name
+        if self.event.check_q(girl_name):
+            self.event.ask_q(girl_name)
+        else:
+            self.say("Sorry, you have already asked her 2 questions!")
+            self.say("You can't ask each girl more than 2 questions.")
 
+            self.choice("How would you like to continue?",
+                        ["Ask someone else", "End the investigation"],
+                        [self.pick_girl, self.end_investigation_question])
+
+    def post_ask_girl_q(self):
+        """Choose what to do next."""
+        self.choice("How would you like to continue?",
+                    ["Ask more question about her", "Ask someone else",
+                     "End the investigation"],
+                    [self.ask_girl_q, self.pick_girl,
+                     self.end_investigation_question])
+
+    def end_investigation_question(self, result=None):
+        """Ask to end the investigation."""
+        self.choice("Are you sure that you have all information"
+                    + " that you needed?", ["Yes", "No"],
+                    [self.end_it, self.pick_girl])
+
+    def end_it(self, result=None):
+        """Do the end investigation stuff."""
         # Final Selection Part
-        story.end_invest()
-        result = event.select_girl()
+        self.story.end_invest()
+        self.event.select_girl()
 
+    def epilogue(self, result):
+        """Play the appropiate epilogues."""
         if result == "WIN":
-            story.good_end()
+            self.story.good_end()
         elif result == "LOSE":
-            story.bad_end()
-
-
-game = Game()
-
-
-# Play the game here
-
-game.play()
+            self.story.bad_end()
