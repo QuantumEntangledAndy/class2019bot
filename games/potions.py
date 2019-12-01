@@ -13,7 +13,7 @@ __maintainer__ = "Dr Andrew King"
 __email__ = "sheepchaan@gmail.com"
 __status__ = "Production"
 
-import time
+from game import Game
 
 
 class Player():
@@ -53,134 +53,153 @@ class Player():
         self.money -= amount
 
 
-def say(message):
-    """Display message to the player."""
-    time.sleep(0.0)
-    print(message)
-    pass
+class Potions(Game):
+    """The potions game itself."""
 
+    @classmethod
+    def game_name(self):
+        """Get unique game name used for selection no spaces."""
+        return "potions"
 
-def get_player_choice(player):
-    """Get the players choice of plant."""
-    valid_choice = False
-    while not valid_choice:
-        choice = input()
+    @classmethod
+    def description(self):
+        """Get the game description."""
+        return ("Be the best potion brewer in your village.")
+
+    def welcome(self):
+        """Get a welcome message."""
+        return ("Potions\nCan you impress the village with your potion"
+                + " brewing skills.\n"
+                + "Created by " + __author__)
+
+    def get_player_choice(self):
+        """Get the players choice of plant."""
+        self.choice("What will you pick?", ['mint', 'sage', 'thyme'],
+                    self.act_player_choice)
+
+    def act_player_choice(self, choice):
+        """Act on players plant choice."""
+        player = self.player
         lower_case_choice = choice.lower()
         if lower_case_choice in ['mint']:
             player.add_item('mint')
             player.loose_money(2)
-            print("Great choice!.")
-            print("+Mint in your inventory")
-            return False
+            self.say("Great choice!.")
+            self.say("+Mint in your inventory")
         elif lower_case_choice in ['sage']:
             player.loose_money(2)
             player.add_item('sage')
-            print("Great choice!.")
-            print("+Sage in your inventory")
-            return False
+            self.say("Great choice!.")
+            self.say("+Sage in your inventory")
         elif lower_case_choice in ['thyme']:
             player.loose_money(2)
             player.add_item('thyme')
-            print("Great choice!.")
-            print("+Thyme in your inventory")
-            return False
-        else:
-            print("Woah! seems like there is no such plant you choose"
-                  + " in the option. Please select again.")
+            self.say("Great choice!.")
+            self.say("+Thyme in your inventory")
+        self.callback()
 
+    def get_player_choice2(self):
+        """Get the players next choice."""
+        self.choice("Will you?", ['yes', 'no'], self.act_player_choice2)
 
-def get_player_choice2(player):
-    """Get the players next choice."""
-    valid_choice = False
-    while not valid_choice:
-        choice1 = input()
+    def act_player_choice2(self, choice1):
+        """Act on asking to buy more."""
         lower_case_choice1 = choice1.lower()
         if lower_case_choice1 in ['yes']:
-            print("Plants ($2): Mint, Sage, Thyme")
-            get_player_choice(player)
-            return False
+            self.say("Plants ($2): Mint, Sage, Thyme")
+            self.callback = self.get_player_choice2
+            self.get_player_choice()
         else:
-            print("Okay! Seems like you are ready for making a potion.")
-            return False
+            self.say("Okay! Seems like you are ready for making a potion.")
+            self.callback2()
 
+    def potion_choice(self):
+        """Get players potion choice."""
+        self.choice("What do you want to make?", ['red potion', 'blue potion',
+                                                  'yellow potion',
+                                                  'black potion'],
+                    self.act_potion_choice)
 
-def potion_choice(player):
-    """Get players potion choice."""
-    p_choice = False
-    while not p_choice:
-        choice2 = input()
+    def act_potion_choice(self, choice2):
+        """Act on chosen potion."""
         lower_case_choice2 = choice2.lower()
         if lower_case_choice2 in ['red potion']:
-            player.has_item('sage')
-            player.add_item('red potion')
-            player.remove_item('sage')
-            print("+Red Potion in your inventory")
-            print("Nice job!")
-            return False
+            self.player.has_item('sage')
+            self.player.add_item('red potion')
+            self.player.remove_item('sage')
+            self.say("+Red Potion in your inventory")
+            self.say("Nice job!")
+            self.loose_game()
         elif lower_case_choice2 in ['blue potion']:
-            player.has_item('mint')
-            player.add_item('blue potion')
-            player.remove_item('mint')
-            print("+Blue Potion in your inventory")
-            print("Nice job!")
-            return False
+            self.player.has_item('mint')
+            self.player.add_item('blue potion')
+            self.player.remove_item('mint')
+            self.say("+Blue Potion in your inventory")
+            self.say("Nice job!")
+            self.loose_game()
         elif lower_case_choice2 in ['yellow potion']:
-            player.has_item('thyme')
-            player.add_item('yellow potion')
-            player.remove_item('thyme')
-            print("+Yellow Potion in your inventory")
-            print("Nice job!")
-            return False
+            self.player.has_item('thyme')
+            self.player.add_item('yellow potion')
+            self.player.remove_item('thyme')
+            self.say("+Yellow Potion in your inventory")
+            self.say("Nice job!")
+            self.loose_game()
         elif lower_case_choice2 in ['black potion']:
-            player.has_item('sage')
-            player.has_item('mint')
-            player.has_item('thyme')
-            player.add_item('black potion')
-            player.remove_item('sage')
-            player.remove_item('mint')
-            player.remove_item('thyme')
-            print("+Black Potion in your inventory")
-            print("Nice job!")
-            win_game(player)
-            return False
-        else:
-            print("Uh oh, seems like you are lacking of ingredient."
-                  + " Please select or try again.")
-            return True
+            self.player.has_item('sage')
+            self.player.has_item('mint')
+            self.player.has_item('thyme')
+            self.player.add_item('black potion')
+            self.player.remove_item('sage')
+            self.player.remove_item('mint')
+            self.player.remove_item('thyme')
+            self.say("+Black Potion in your inventory")
+            self.say("Nice job!")
+            self.win_game()
 
+    def win_game(self):
+        """Win the game, or not."""
+        self.say('Congratulations! You have impressed the village by'
+                 + ' createing the most rare potion, Black potion!'
+                 + ' You have  beaten the game')
 
-def win_game(player):
-    """Win the game, or not."""
-    win = False
-    while not win:
-        if player.has_item('black potion'):
-            print('Congratulations! You have beat the game and'
-                  + ' create the most rare potion, Black potion!')
-            return False
-        else:
-            return True
+    def loose_game(self):
+        """Loose the game."""
+        self.say("Unfortunatly this potion was not good enough to"
+                 + " impress the village")
 
+    def play(self):
+        """Play the game."""
+        self.player = Player()
+        self.say("You are the only human living in magical village named"
+                 + " 'Odel'. You are planing to start a potion company even"
+                 + " though you known you have a stronger competitor which"
+                 + " are witches.")
+        self.say("Witches's potions are very tasty that people in the"
+                 + " village dying to buy for. You want to stand out in this"
+                 + " village too.")
+        self.say("Soon later, you open up your first company.")
+        self.say("You named your company as Gemini Potion.")
+        self.say("First, you need to pick a plant to create your potion.")
+        self.say("You have $10 as your first start.")
+        self.say("Plants ($2): Mint, Sage, Thyme")
+        self.say("Now, which plants will you select?")
+        self.callback = self.stage2
+        self.get_player_choice()
 
-player = Player()
-say("You are the only human living in magical village named 'Odel'."
-    + " You are planing to start a potion company eventhough you known"
-    + " you have a stronger competitor which are witches.")
-say("Witches's potions are very tasty that people in the village dying"
-    + " to buy for. You want to stand out in this village too.")
-say("Soon later, you open up your first company.")
-say("You named your company as Gemini Potion.")
-say("First, you need to pick a plant to create your potion.")
-say("You have $10 as your first start.")
-say("Plants ($2): Mint, Sage, Thyme")
-say("Now, which plants will you select?")
-get_player_choice(player)
-say("Do you wish to buy more plant?")
-say("Yes or No?")
-get_player_choice2(player)
-say("Now which potions do you want to make? The cost of potion"
-    + " that you could sell is shown after the potion name.")
-say("Red potion $5 (ingredient required: Sage)")
-say("Blue potion $5 (ingredient required: Mint)")
-say("Yellow potion $5 (ingredient required: Thyme)")
-say("Black potion $10 (ingredients required: Sage + Mint + Thyme)")
-potion_choice(player)
+    def stage2(self, result=None):
+        """Play stage 2."""
+        self.say("Do you wish to buy more plant?")
+        self.say("Yes or No?")
+        self.callback2 = self.stage3
+        self.get_player_choice2()
+
+    def stage3(self, result=None):
+        """Play stage3."""
+        self.say("Now which potions do you want to make? The cost of potion"
+                 + " that you could sell is shown after the potion name.")
+        self.say("Red potion $5 (ingredient required: Sage)")
+        self.say("Blue potion $5 (ingredient required: Mint)")
+        self.say("Yellow potion $5 (ingredient required: Thyme)")
+        self.say("Black potion $10 (ingredients required: Sage + Mint +"
+                 + " Thyme)")
+        self.potion_choice()

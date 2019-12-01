@@ -20,6 +20,7 @@ from games.mathspirit import MathSpirit
 from games.momma import Momma
 from games.snake import Snake
 from games.quiz import Quiz
+from games.potions import Potions
 
 import logging
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
@@ -45,6 +46,7 @@ games = [
     Momma,
     Snake,
     Quiz,
+    Potions,
 ]
 
 
