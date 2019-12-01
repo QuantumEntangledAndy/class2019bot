@@ -439,6 +439,7 @@ class Rng(Game):
         """Time to play."""
         start = self.start
         player = self.player
+        player.stage = 0
         event_result = start.enter(player)
         self.event_result = event_result
         player.healed(float("inf"))
