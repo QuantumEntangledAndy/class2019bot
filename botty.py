@@ -7,6 +7,7 @@ This program will attempt to play our games made in class over telegram.
 Licence: AGPL v3
 """
 
+from os import chmod
 from pathlib import Path
 
 from games.testgame import TestGame
@@ -128,6 +129,7 @@ def main():
     # Make sure to set use_context=True to use the new context based callbacks
     # Post version 12 this will no longer be necessary
     token_file = Path("token")
+    chmod(str(token_file), 0o400)
     token = token_file.read_text().strip()
     updater = Updater(token, use_context=True)
 
