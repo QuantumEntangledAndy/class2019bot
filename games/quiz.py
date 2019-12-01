@@ -2,11 +2,13 @@
 Quiz.
 
 A simple quiz game with bonuses too.
+
+Adapted to play on telegram by Andrew W King
 """
 
-__author__ = "Tania Saisod"
+__author__ = "Tania Saisod and Suchujnun Uparipahk"
 __copyright__ = "Copyright 2019, Chulalongkorn University"
-__credits__ = ["Tania Saisod"]
+__credits__ = ["Tania Saisod", "Suchujnun Uparipahk"]
 __license__ = "AGPL"
 __version__ = "1.0.0"
 __maintainer__ = "Dr Andrew King"

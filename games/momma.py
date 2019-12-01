@@ -2,12 +2,16 @@
 Momma.
 
 Time machines are nothing but trouble.
+
+Adapted to play on telegram by Andrew W King
 """
 
 
-__author__ = "Ranvir Koknutphongchai, Porsuk Phlalop"
+__author__ = ("Ranvir Koknutphongchai, Porsuk Phlalop, Teerasit Saweephanlop"
+              + " and Krittin Thasunthorn")
 __copyright__ = "Copyright 2019, Chulalongkorn University"
-__credits__ = ["Ranvir Koknutphongchai", "Porsuk Phlalop"]
+__credits__ = ["Ranvir Koknutphongchai", "Porsuk Phlalop",
+               "Teerasit Saweephanlop", "Krittin Thasunthorn"]
 __license__ = "AGPL"
 __version__ = "1.0.0"
 __maintainer__ = "Dr Andrew King"

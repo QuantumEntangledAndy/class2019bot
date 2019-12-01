@@ -4,10 +4,11 @@ Abyss Game.
 Adapted to play on telegram by Andrew W King
 """
 
-__author__ = "Kevin Yuen,  Yosita Phailomwong,  Kornkanok  Paramesirikuntorn"
+__author__ = ("Kevin Yuen,  Yosita Phailomwong,  Kornkanok  Paramesirikuntorn"
+              + ",  Poom Ungolan")
 __copyright__ = "Copyright 2019, Chulalongkorn University"
 __credits__ = ["Kevin Yuen",  "Yosita Phailomwong",
-               "Kornkanok  Paramesirikuntorn"]
+               "Kornkanok  Paramesirikuntorn", "Poom Ungolan"]
 __license__ = "AGPL"
 __version__ = "1.0.0"
 __maintainer__ = "Dr Andrew King"

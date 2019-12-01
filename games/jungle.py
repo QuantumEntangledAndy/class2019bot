@@ -1,13 +1,17 @@
 """
 The Jungle Survial Game.
 
-Authours:  Thitaporn Petchpadoong,  Nakamol Sansuktaweesub
+Authours:  Thitaporn Petchpadoong,  Nakamol Sansuktaweesub,
+           Proud Prakopvitayakit
+
+Adapted to play on telegram by Andrew W King
 """
 
 __author__ = ("Thitaporn Petchpadoong,  Nakamol Sansuktaweesub,"
-              + " Sarisa Keittivuti")
+              + " Sarisa Keittivuti and Proud Prakopvitayakit")
 __copyright__ = "Copyright 2019, Chulalongkorn University"
-__credits__ = ["Thitaporn Petchpadoong",  "Nakamol Sansuktaweesub"]
+__credits__ = ["Thitaporn Petchpadoong",  "Nakamol Sansuktaweesub",
+               "Proud Prakopvitayakit"]
 __license__ = "AGPL"
 __version__ = "1.0.0"
 __maintainer__ = "Dr Andrew King"

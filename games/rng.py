@@ -1,12 +1,16 @@
 """
 The Trashy RPG Game.
 
-Authours:  Pimsucha Kanjchanapoomi,  Saithan Srichantamit
+Authours:  Pimsucha Kanjchanapoomi,  Saithan Srichantamit, Natwara Manitsirisuk
+
+Adapted to play on telegram by Andrew W King
 """
 
-__author__ = "Pimsucha Kanjchanapoomi,  Saithan Srichantamit"
+__author__ = ("Pimsucha Kanjchanapoomi,  Saithan Srichantamit"
+              + " and Natwara Manitsirisuk")
 __copyright__ = "Copyright 2019, Chulalongkorn University"
-__credits__ = ["Pimsucha Kanjchanapoomi",  "Saithan Srichantamit"]
+__credits__ = ["Pimsucha Kanjchanapoomi",  "Saithan Srichantamit",
+               "Natwara Manitsirisuk"]
 __license__ = "AGPL"
 __version__ = "1.0.0"
 __maintainer__ = "Dr Andrew King"

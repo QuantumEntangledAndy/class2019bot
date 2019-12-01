@@ -3,11 +3,14 @@ A game of snake.
 
 This is a simple branching path story.
 
+Adapted to play on telegram by Andrew W King
 """
 
-__author__ = "Pakhin Pawornwitoon"
+__author__ = ("Pakhin Pawornwitoon, Chalisa Detchanun and"
+              + " Kunchanapun Kaewbunthung")
 __copyright__ = "Copyright 2019, Chulalongkorn University"
-__credits__ = ["Pakhin Pawornwitoon"]
+__credits__ = ["Pakhin Pawornwitoon", "Chalisa Detchanun",
+               "Kunchanapun Kaewbunthung"]
 __license__ = "AGPL"
 __version__ = "1.0.0"
 __maintainer__ = "Dr Andrew King"

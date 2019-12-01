@@ -1,12 +1,17 @@
 """
 The Dating Game.
 
-Authours:  Nattamon Panichakul,
+Authours:  Nattamon Panichakul,  Tanyares Dhammapimuk, Bunnasorn Kaenrattana,
+           Thanyamai Prasongsukarn
+
+Adapted to play on telegram by Andrew W King
 """
 
-__author__ = "Nattamon Panichakul"
+__author__ = ("Nattamon Panichakul, Tanyares Dhammapimuk, Bunnasorn"
+              + " Kaenrattana and Thanyamai Prasongsukarn")
 __copyright__ = "Copyright 2019, Chulalongkorn University"
-__credits__ = ["Nattamon Panichakul"]
+__credits__ = ["Nattamon Panichakul", "Tanyares Dhammapimuk",
+               "Bunnasorn Kaenrattana", "Thanyamai Prasongsukarn"]
 __license__ = "AGPL"
 __version__ = "1.0.0"
 __maintainer__ = "Dr Andrew King"

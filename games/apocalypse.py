@@ -1,12 +1,17 @@
 """
 The apocalypse game.
 
-Authours: Surawat Chukae,  Watcharaphol Vongnoi
+Authours: Surawat Chukae,  Watcharaphol Vongnoi, Narutchai Arunrattananukul,
+          Peemapat Jumrusprasert
+
+Adapted to play on telegram by Andrew W King
 """
 
-__author__ = "Surawat Chukae,  Watcharaphol Vongnoi"
+__author__ = ("Surawat Chukae,  Watcharaphol Vongnoi,"
+              + " Narutchai Arunrattananukul and Peemapat Jumrusprasert")
 __copyright__ = "Copyright 2019, Chulalongkorn University"
-__credits__ = ["Surawat Chukae",  "Watcharaphol Vongnoi"]
+__credits__ = ["Surawat Chukae",  "Watcharaphol Vongnoi",
+               "Narutchai Arunrattananukul", "Peemapat Jumrusprasert"]
 __license__ = "AGPL"
 __version__ = "2.2.0"
 __maintainer__ = "Dr Andrew King"

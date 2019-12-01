@@ -2,6 +2,8 @@
 Math spirit.
 
 Why ghosts should not like math.
+
+Adapted to play on telegram by Andrew W King
 """
 
 

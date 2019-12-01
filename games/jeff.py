@@ -2,11 +2,15 @@
 Evil jeff Game.
 
 The most evil name.
+
+Adapted to play on telegram by Andrew W King
 """
 
-__author__ = "Kasin Onprasop,  Poomipat Laorsatiankul"
+__author__ = ("Kasin Onprasop,  Poomipat Laorsatiankul and"
+              + " Thanakrit Jiansamanya")
 __copyright__ = "Copyright 2019, Chulalongkorn University"
-__credits__ = ["Kasin Onprasop",  "Poomipat Laorsatiankul"]
+__credits__ = ["Kasin Onprasop",  "Poomipat Laorsatiankul",
+               "Thanakrit Jiansamanya"]
 __license__ = "AGPL"
 __version__ = "1.0.0"
 __maintainer__ = "Dr Andrew King"

@@ -2,11 +2,13 @@
 Potions.
 
 Try and be the best potion brewer.
+
+Adapted to play on telegram by Andrew W King
 """
 
-__author__ = "Arraya Tanyanurak"
+__author__ = "Arraya Tanyanurak and Suparada Suwanlertlum"
 __copyright__ = "Copyright 2019, Chulalongkorn University"
-__credits__ = ["Arraya Tanyanurak"]
+__credits__ = ["Arraya Tanyanurak", "Suparada Suwanlertlum"]
 __license__ = "AGPL"
 __version__ = "1.0.0"
 __maintainer__ = "Dr Andrew King"
