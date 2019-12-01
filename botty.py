@@ -10,7 +10,6 @@ Licence: AGPL v3
 from os import chmod
 from pathlib import Path
 
-from games.testgame import TestGame
 from games.abyss import Abyss
 from games.jeff import Jeff
 from games.love import Love
@@ -36,7 +35,6 @@ logger = logging.getLogger(__name__)
 users = {}
 
 games = [
-    TestGame,
     Abyss,
     Jeff,
     Love,
@@ -145,7 +143,7 @@ def main():
     dp.add_handler(MessageHandler(Filters.text, text_recieved))
 
     # log all errors
-    # dp.add_error_handler(error)
+    dp.add_error_handler(error)
 
     # Start the Bot
     updater.start_polling()
