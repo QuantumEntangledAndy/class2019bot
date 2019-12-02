@@ -271,7 +271,9 @@ class Quiz(Game):
                         [self.begin, self.give_up])
             return
         self.say('Congratulations! Game Completed!')
+        self.goodbye()
 
     def give_up(self, result=None):
         """Do this on qive up."""
         self.say("Too bad, you can try again with /play")
+        self.goodbye()

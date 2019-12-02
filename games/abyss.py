@@ -173,6 +173,7 @@ class Abyss(Game):
       ░       ░  ░       ░      ░  ░       ░ ░        ░     ░  ░   ░
                                                      ░
 """)
+            self.goodbye()
             return
 
         # first part of the game
@@ -212,6 +213,7 @@ class Abyss(Game):
       ░       ░  ░       ░      ░  ░       ░ ░        ░     ░  ░   ░
                                                      ░
 """)
+            self.goodbye()
             return
         elif response == "right":
             self.say("You head deeper into the forest and you find a"
@@ -238,6 +240,7 @@ class Abyss(Game):
       ░       ░  ░       ░      ░  ░       ░ ░        ░     ░  ░   ░
                                                      ░
 """)
+            self.goodbye()
             return
 
         # second part of the game
@@ -349,6 +352,7 @@ class Abyss(Game):
       ░       ░  ░       ░      ░  ░       ░ ░        ░     ░  ░   ░
                                                      ░
 """)
+                self.goodbye()
                 return
         elif response == "run_away":
             self.say("As you run away, you stepped on a bear trap"
@@ -367,6 +371,7 @@ class Abyss(Game):
       ░       ░  ░       ░      ░  ░       ░ ░        ░     ░  ░   ░
                                                      ░
 """)
+            self.goodbye()
             return
 
         # Crossroad
@@ -401,6 +406,7 @@ class Abyss(Game):
       ░       ░  ░       ░      ░  ░       ░ ░        ░     ░  ░   ░
                                                      ░
 """)
+            self.goodbye()
             return
         elif response == "forward":
             self.say("You used the ladder to scale the wall and arrive"
@@ -427,6 +433,7 @@ class Abyss(Game):
       ░       ░  ░       ░      ░  ░       ░ ░        ░     ░  ░   ░
                                                      ░
 """)
+            self.goodbye()
             return
 
         # the final fight
@@ -456,6 +463,7 @@ class Abyss(Game):
       ░       ░  ░       ░      ░  ░       ░ ░        ░     ░  ░   ░
                                                      ░
 """)
+            self.goodbye()
             return
         elif response == "Deceive_him":
             self.say("You make him think that you're dead and when he"
@@ -509,6 +517,7 @@ class Abyss(Game):
       ░       ░  ░       ░      ░  ░       ░ ░        ░     ░  ░   ░
                                                      ░
 """)
+            self.goodbye()
             return
         elif response == "Finish_him_off":
             self.say("You have no mercy for a man like Lucifer."
@@ -556,3 +565,4 @@ class Abyss(Game):
  '\\:::\\;'                   `*´‘            `· :;::\\;::-·´                   \\;:'      ‘           ¯                       '·-·'       `' · -':::''           `*ª'´‘
    `*´‘                                                                       °                   ‘                                                         '
 """) # noqa
+            self.goodbye()

@@ -177,14 +177,17 @@ class Snake(Game):
         """Do post anaconda stuff."""
         self.say("YOU DIED")
         Death(self).enter()
+        self.goodbye()
 
     def tiger_path(self, result):
         """Do post tiger stuff."""
         if result == 'GAME OVER':
             self.say("YOU DIED")
             Death(self).enter()
+            self.goodbye()
             return
         else:
             self.say("YOU WON")
             Victory(self).enter()
+            self.goodbye()
             return

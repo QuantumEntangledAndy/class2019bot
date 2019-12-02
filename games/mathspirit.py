@@ -288,8 +288,10 @@ class MathSpirit(Game):
                         [self.post_rules, self.end_game])
             return
         self.say('Congratulations! You made it out of the room!')
+        self.goodbye()
 
     def end_game(self, reply=None):
         """When they quit do this."""
         self.say("Some one will come and help you escape from the math"
                  + " eventually... right.... right????")
+        self.goodbye()

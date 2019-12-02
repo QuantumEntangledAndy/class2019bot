@@ -163,11 +163,13 @@ class Potions(Game):
         self.say('Congratulations! You have impressed the village by'
                  + ' createing the most rare potion, Black potion!'
                  + ' You have  beaten the game')
+        self.goodbye()
 
     def loose_game(self):
         """Loose the game."""
         self.say("Unfortunatly this potion was not good enough to"
                  + " impress the village")
+        self.goodbye()
 
     def play(self):
         """Play the game."""

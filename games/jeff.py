@@ -430,6 +430,7 @@ class Jeff(Game):
 
             =================
             """)
+            self.goodbye()
             return
         elif event_result == "HAPPY ENDING":
             self.say("""
@@ -440,6 +441,7 @@ class Jeff(Game):
             Fin...
             ================
             """)
+            self.goodbye()
             return
         elif event_result == "GOOD ENDING":
             self.say("""
@@ -450,6 +452,7 @@ class Jeff(Game):
             Fin...
             ================
             """)
+            self.goodbye()
             return
         elif event_result == "GAME OVER":
             self.say("""
@@ -461,6 +464,7 @@ class Jeff(Game):
 
             ================
             """)
+            self.goodbye()
             return
         self.ask_choice()
 

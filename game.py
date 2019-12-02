@@ -102,3 +102,10 @@ class Game():
 
     def play(self):
         """Start playing, shoud reset too."""
+
+    def goodbye(self):
+        """Send the goodbye message."""
+        self.say("==================================\n"
+                 + "That is the end of this game.\n"
+                 + "You can play again with /play\n"
+                 + "Or choose another game with /start")

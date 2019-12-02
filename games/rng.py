@@ -507,5 +507,6 @@ class Rng(Game):
                      + " pick another game from the main menu.)")
             self.say("Have a better luck next time")
             self.say("Hail Great RNG God!!!")
+            self.goodbye()
         self.event_result = event_result
         self.event_loop()

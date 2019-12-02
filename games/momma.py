@@ -427,3 +427,4 @@ class Momma(Game):
             self.story.good_end()
         elif result == "LOSE":
             self.story.bad_end()
+        self.goodbye()

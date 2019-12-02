@@ -575,21 +575,25 @@ class Apocalypse(Game):
             return
         else:
             self.say(TYL + "YOU WON")
+            self.goodbye()
 
     def post_everyday(self, result):
         """Do post everyday stuff."""
         if result == "DIED":
             self.say("YOU ARE DEAD")
+            self.goodbye()
             return
         elif result == "VICTORY":
             self.i = 100
             self.post_get_user_choice("CONTINUE")
         elif self.player.hungry == 0:
             Death_By_Hunger().enter(self.player)
+            self.goodbye()
             return
 
         elif self.player.health <= 0:
             Death_By_Health().enter(self.player)
+            self.goodbye()
             return
 
         self.say(f"Day... {self.player.day}")

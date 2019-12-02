@@ -187,3 +187,4 @@ class Love(Game):
             self.say('CONGRATULATIONS!!!')
         if self.player.current_point <= 40:
             self.say('Oopsie...')
+        self.goodbye()

@@ -47,6 +47,7 @@ class Jungle(Game):
         """End of the game."""
         self.say("Game Over. Start Again.")
         self.say("=" * 95)
+        self.goodbye()
 
     def stage1(self):
         """Play stage 1."""
