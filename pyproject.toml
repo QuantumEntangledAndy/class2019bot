@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "class2019bot"
+version = "0.1.0"
+description = "The telegram bot for the text adventure games made in the comp app chem class of 2019."
+authors = ["Class of 2019, Chulalongkorn University, BSAC Chemistry"]
+license = "AGPL-3.0-or-later"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+python-telegram-bot = "^13.0"
+PyYAML = "^5.3.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
