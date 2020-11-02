@@ -6,11 +6,16 @@ Authours:  Pimsucha Kanjchanapoomi,  Saithan Srichantamit, Natwara Manitsirisuk
 Adapted to play on telegram by Andrew W King
 """
 
-__author__ = ("Pimsucha Kanjchanapoomi,  Saithan Srichantamit"
-              + " and Natwara Manitsirisuk")
+__author__ = (
+    "Pimsucha Kanjchanapoomi,  Saithan Srichantamit"
+    + " and Natwara Manitsirisuk"
+)
 __copyright__ = "Copyright 2019, Chulalongkorn University"
-__credits__ = ["Pimsucha Kanjchanapoomi",  "Saithan Srichantamit",
-               "Natwara Manitsirisuk"]
+__credits__ = [
+    "Pimsucha Kanjchanapoomi",
+    "Saithan Srichantamit",
+    "Natwara Manitsirisuk",
+]
 __license__ = "AGPL"
 __version__ = "1.0.0"
 __maintainer__ = "Dr Andrew King"
@@ -29,13 +34,13 @@ def rng_bless(num):
     return rng
 
 
-class Player():
+class Player:
     """The player data."""
 
     def __init__(self, bot):
         """Init the player."""
         self.bot = bot
-        self.name = 'gimme a name'
+        self.name = "gimme a name"
         self.lv = 1
         self.health = 25
         self.str = 5
@@ -53,12 +58,12 @@ class Player():
     @property
     def max_hp(self):
         """Get max hp."""
-        return self.vit*5
+        return self.vit * 5
 
     @property
     def base_atk(self):
         """Get base atk."""
-        return self.str*3
+        return self.str * 3
 
     @property
     def dodge_rate(self):
@@ -71,12 +76,14 @@ class Player():
     @property
     def max_exp(self):
         """Get max exp."""
-        return self.lv*5
+        return self.lv * 5
 
     def damage(self, amount):
         """Damage the player."""
-        self.bot.say(f"From your Hp {self.health} you lost {amount}...\n"
-                     + f"You have {max([self.health-amount,0])} Hp left")
+        self.bot.say(
+            f"From your Hp {self.health} you lost {amount}...\n"
+            + f"You have {max([self.health-amount,0])} Hp left"
+        )
         self.health = self.health - amount
         if self.health < 0:
             self.health = 0
@@ -120,7 +127,7 @@ class Player():
 
     def add_lck(self):
         """Gain luck."""
-        if self.ducat >= 2*self.lck:
+        if self.ducat >= 2 * self.lck:
             self.ducat -= self.lck
             self.lck += 1
             self.bot.say("successfully add luck")
@@ -130,34 +137,34 @@ class Player():
         self.ducat += amount
 
 
-class Monster():
+class Monster:
     """A monster, aka exp farms."""
 
     def __init__(self, stage):
         """Make that mob."""
-        self.name = 'random mob A on the way'
+        self.name = "random mob A on the way"
         self.lv = stage + (1 - rng_bless(2))
 
-        self.str = 3+stage+(1-rng_bless(2))
-        self.vit = 3+stage+(1-rng_bless(2))
-        self.agi = 3+stage+(1-rng_bless(2))
+        self.str = 3 + stage + (1 - rng_bless(2))
+        self.vit = 3 + stage + (1 - rng_bless(2))
+        self.agi = 3 + stage + (1 - rng_bless(2))
         self.health = self.max_hp
-        self.lck = 3+stage+(1-rng_bless(2))
+        self.lck = 3 + stage + (1 - rng_bless(2))
 
     @property
     def max_hp(self):
         """Get max HP."""
-        return self.vit*4
+        return self.vit * 4
 
     @property
     def base_atk(self):
         """Get base attack."""
-        return self.str*2
+        return self.str * 2
 
     @property
     def dodge_rate(self):
         """Get dodge rate."""
-        d = int(self.agi/2)
+        d = int(self.agi / 2)
         if d > 90:
             d = 90
         return d
@@ -169,36 +176,36 @@ class Monster():
             self.health = 0
 
 
-class Boss():
+class Boss:
     """A BOSS, aka an overpowered exp farm."""
 
     def __init__(self, stage):
         """Make this bigger mob."""
-        self.name = 'Just a Boss'
+        self.name = "Just a Boss"
 
         self.lv = stage
 
-        self.str = 5+self.lv+(1-rng_bless(2))
+        self.str = 5 + self.lv + (1 - rng_bless(2))
 
-        self.vit = 5+self.lv+(1-rng_bless(2))
-        self.agi = 5+self.lv+(1-rng_bless(2))
-        self.lck = 5+self.lv+(1-rng_bless(2))
+        self.vit = 5 + self.lv + (1 - rng_bless(2))
+        self.agi = 5 + self.lv + (1 - rng_bless(2))
+        self.lck = 5 + self.lv + (1 - rng_bless(2))
         self.health = self.max_hp
 
     @property
     def max_hp(self):
         """Get max HP."""
-        return self.vit*6
+        return self.vit * 6
 
     @property
     def base_atk(self):
         """Get base attack."""
-        return self.str*4
+        return self.str * 4
 
     @property
     def dodge_rate(self):
         """Get dodge rate."""
-        d = self.agi*2
+        d = self.agi * 2
         if d > 90:
             d = 90
         return d
@@ -210,7 +217,7 @@ class Boss():
             self.health = 0
 
 
-class Event():
+class Event:
     """The place where anything happens."""
 
     def __init__(self, bot):
@@ -248,17 +255,16 @@ class Inn(Event):
 
     def enter(self, player):
         """Start the event."""
-        i_options = [
-            "Add_Strength",
-            "Add_Agility",
-            "Add_Vitality",
-            "Add_Luck"
-            ]
+        i_options = ["Add_Strength", "Add_Agility", "Add_Vitality", "Add_Luck"]
         self.say("You found an inn and decided to stay for a night")
-        self.say("You can choose to increase your stats  once by"
-                 + " spending twice the amount of current stats")
-        self.say("If you don't have enough ducat, the choice is"
-                 + " invalid and nothing happen")
+        self.say(
+            "You can choose to increase your stats  once by"
+            + " spending twice the amount of current stats"
+        )
+        self.say(
+            "If you don't have enough ducat, the choice is"
+            + " invalid and nothing happen"
+        )
         for idx, i_option in enumerate(i_options):
             self.say(f"{idx+1} : {i_option} ")
         self.choice("What will you improve?", i_options, self.bot.post_inn)
@@ -299,8 +305,8 @@ class Fight(Event):
 
     def enter(self, player, opponent):
         """Start the event."""
-        money_earn = int(opponent.lv * (1+rng_bless(player.lck)/100))
-        exp_earn = int(money_earn/2)
+        money_earn = int(opponent.lv * (1 + rng_bless(player.lck) / 100))
+        exp_earn = int(money_earn / 2)
         while True:
             self.say("You choose to attack the monster")
             roll = rng_bless(99)
@@ -311,13 +317,17 @@ class Fight(Event):
 
             if opponent.dodge_rate >= roll:
                 multiplier_o = 0
-            damage_by_player = int(player.base_atk
-                                   * (1 + rng_bless(10)/10) * multiplier_p)
-            damage_by_mons = int(opponent.base_atk
-                                 * (1 * rng_bless(10)/10) * multiplier_o)
+            damage_by_player = int(
+                player.base_atk * (1 + rng_bless(10) / 10) * multiplier_p
+            )
+            damage_by_mons = int(
+                opponent.base_atk * (1 * rng_bless(10) / 10) * multiplier_o
+            )
 
-            self.say(f"You attack the monster by {damage_by_player},"
-                     + f"but get counter by {damage_by_mons}")
+            self.say(
+                f"You attack the monster by {damage_by_player},"
+                + f"but get counter by {damage_by_mons}"
+            )
             opponent.damage(damage_by_player)
 
             player.damage(damage_by_mons)
@@ -356,7 +366,7 @@ class See_Stat(Event):
             "agi": player.agi,
             "lck": player.lck,
             "ducat": player.ducat,
-            "exp": player.exp
+            "exp": player.exp,
         }
         self.bot.say(yaml.dump(the_stat))
 
@@ -397,8 +407,11 @@ class Rng(Game):
 
     def welcome(self):
         """Get a welcome message."""
-        return ("RNG\nYou must love pointlessly trawling through games.\n"
-                + "Created by " + __author__)
+        return (
+            "RNG\nYou must love pointlessly trawling through games.\n"
+            + "Created by "
+            + __author__
+        )
 
     def __init__(self, bot, chat_id):
         """Init the game."""
@@ -408,18 +421,13 @@ class Rng(Game):
             Fight(self),
             Give_Up(self),
         ]
-        self.stage_setting = [
-            Inn(self),
-            Battle(self),
-            Nothing(self)
-
-        ]
+        self.stage_setting = [Inn(self), Battle(self), Nothing(self)]
 
         self.start = Start(self)
         self.died = Died(self)
 
         data = {
-            "name": 'gimme a name',
+            "name": "gimme a name",
             "lv": 1,
             "health": 25,
             "str": 5,
@@ -427,10 +435,18 @@ class Rng(Game):
             "agi": 5,
             "lck": 5,
             "ducat": 0,
-            "exp": 0
+            "exp": 0,
         }
-        list_of_stat = ("name", "lv", "str", "vit", "agi", "lck", "ducat",
-                        "exp")
+        list_of_stat = (
+            "name",
+            "lv",
+            "str",
+            "vit",
+            "agi",
+            "lck",
+            "ducat",
+            "exp",
+        )
         self.player = Player(self)
         for i in list_of_stat:
             setattr(self.player, i, data[i])  # set the player stat
@@ -443,7 +459,7 @@ class Rng(Game):
         event_result = start.enter(player)
         self.event_result = event_result
         player.healed(float("inf"))
-        if player.name == 'gimme a name':
+        if player.name == "gimme a name":
             self.open_answer("Please enter a new name", self.stage2)
         else:
             self.event_loop()
@@ -482,9 +498,9 @@ class Rng(Game):
 
     def post_battle(self, battle_choice):
         """Start the actual battle."""
-        if battle_choice == 'Fight':
+        if battle_choice == "Fight":
             Fight(self).enter(self.player, self.opponent)
-        elif battle_choice == 'Give_Up':
+        elif battle_choice == "Give_Up":
             Give_Up(self).enter(self.player)
         elif battle_choice == "See_Stat":
             See_Stat(self).enter(self.player)
@@ -502,9 +518,11 @@ class Rng(Game):
             self.say(f"The current stage is {self.player.stage}")
 
         if event_result == "GAME OVER":
-            self.say("Your progress will be kept for next play"
-                     + " through... Just use /play again (Stats lost if you"
-                     + " pick another game from the main menu.)")
+            self.say(
+                "Your progress will be kept for next play"
+                + " through... Just use /play again (Stats lost if you"
+                + " pick another game from the main menu.)"
+            )
             self.say("Have a better luck next time")
             self.say("Hail Great RNG God!!!")
             self.goodbye()

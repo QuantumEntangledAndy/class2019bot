@@ -7,11 +7,17 @@ Authours:  Nattamon Panichakul,  Tanyares Dhammapimuk, Bunnasorn Kaenrattana,
 Adapted to play on telegram by Andrew W King
 """
 
-__author__ = ("Nattamon Panichakul, Tanyares Dhammapimuk, Bunnasorn"
-              + " Kaenrattana and Thanyamai Prasongsukarn")
+__author__ = (
+    "Nattamon Panichakul, Tanyares Dhammapimuk, Bunnasorn"
+    + " Kaenrattana and Thanyamai Prasongsukarn"
+)
 __copyright__ = "Copyright 2019, Chulalongkorn University"
-__credits__ = ["Nattamon Panichakul", "Tanyares Dhammapimuk",
-               "Bunnasorn Kaenrattana", "Thanyamai Prasongsukarn"]
+__credits__ = [
+    "Nattamon Panichakul",
+    "Tanyares Dhammapimuk",
+    "Bunnasorn Kaenrattana",
+    "Thanyamai Prasongsukarn",
+]
 __license__ = "AGPL"
 __version__ = "1.0.0"
 __maintainer__ = "Dr Andrew King"
@@ -21,7 +27,7 @@ __status__ = "Production"
 from game import Game
 
 
-class Player():
+class Player:
     """Holds player data."""
 
     def __init__(self):
@@ -34,11 +40,19 @@ class Player():
         self.current_point += amount
 
 
-class Situation():
+class Situation:
     """Handles the various situations."""
 
-    def __init__(self, situation, first_option, first_outcome,
-                 first_point, second_option, second_outcome, second_point):
+    def __init__(
+        self,
+        situation,
+        first_option,
+        first_outcome,
+        first_point,
+        second_option,
+        second_outcome,
+        second_point,
+    ):
         """Create the situation."""
         self.situation = situation
         self.first_option = first_option
@@ -87,8 +101,7 @@ class Love(Game):
 
     def welcome(self):
         """Get a welcome message."""
-        return ("Love, the dating game.\n"
-                + "Created by " + __author__)
+        return "Love, the dating game.\n" + "Created by " + __author__
 
     def play(self):
         """Start playing."""
@@ -99,61 +112,87 @@ class Love(Game):
         """Play stage 1."""
         self.player.name = name
 
-        print("The objective of this game is to find a girl, date her, and"
-              + " get her to say yes on your marriage proposal")
+        print(
+            "The objective of this game is to find a girl, date her, and"
+            + " get her to say yes on your marriage proposal"
+        )
 
         self.situations = []
 
-        self.situations.append(Situation("\n You need to choose a place to"
-                                         + " find that girl.",
-                                         "Walk into a pub",
-                                         "You found a girl", -5,
-                                         "Walk along a busy street",
-                                         "You found a girl", 10))
+        self.situations.append(
+            Situation(
+                "\n You need to choose a place to" + " find that girl.",
+                "Walk into a pub",
+                "You found a girl",
+                -5,
+                "Walk along a busy street",
+                "You found a girl",
+                10,
+            )
+        )
 
-        self.situations.append(Situation("What should you do to her?",
-                                         "Buy her a drink",
-                                         "She is pleased", 20,
-                                         "Throw her some pick-up lines",
-                                         "Things got awkward", -8))
+        self.situations.append(
+            Situation(
+                "What should you do to her?",
+                "Buy her a drink",
+                "She is pleased",
+                20,
+                "Throw her some pick-up lines",
+                "Things got awkward",
+                -8,
+            )
+        )
 
-        self.situations.append(Situation("Choose what you're going to wear"
-                                         + " to the amusement park.",
-                                         "A suit",
-                                         "When she sees you, She says"
-                                         + " 'Looks handsome, you’re making"
-                                         + " my clothes look lacking.''", 13,
-                                         "Dress casually.",
-                                         "When sees you, she says,"
-                                         + " ‘Wow…(blush), lets go.’", 20))
+        self.situations.append(
+            Situation(
+                "Choose what you're going to wear" + " to the amusement park.",
+                "A suit",
+                "When she sees you, She says"
+                + " 'Looks handsome, you’re making"
+                + " my clothes look lacking.''",
+                13,
+                "Dress casually.",
+                "When sees you, she says," + " ‘Wow…(blush), lets go.’",
+                20,
+            )
+        )
 
-        self.situations.append(Situation("You get to talk to each other,"
-                                         + " spend some quality time and"
-                                         + " played lots of roller coasters."
-                                         + " When the sun set, you looked"
-                                         + " into her eyes and mustered"
-                                         + " my courage to confess your"
-                                         + " love for her. Her answer is"
-                                         + " ‘Yes!’. She becomes"
-                                         + " my girlfriend, you kept in"
-                                         + " touch and planned for your"
-                                         + " next date. \n \n On a next date,"
-                                         + " you want to buy her a present."
-                                         + " What should it be?",
-                                         "A flower you decorated yourself",
-                                         "She likes it a lot", 20,
-                                         "An expensive ring and flower",
-                                         "She feels uneasy and got confused. ",
-                                         10))
+        self.situations.append(
+            Situation(
+                "You get to talk to each other,"
+                + " spend some quality time and"
+                + " played lots of roller coasters."
+                + " When the sun set, you looked"
+                + " into her eyes and mustered"
+                + " my courage to confess your"
+                + " love for her. Her answer is"
+                + " ‘Yes!’. She becomes"
+                + " my girlfriend, you kept in"
+                + " touch and planned for your"
+                + " next date. \n \n On a next date,"
+                + " you want to buy her a present."
+                + " What should it be?",
+                "A flower you decorated yourself",
+                "She likes it a lot",
+                20,
+                "An expensive ring and flower",
+                "She feels uneasy and got confused. ",
+                10,
+            )
+        )
 
-        self.situations.append(Situation("After a year of dating, you decided"
-                                         + " to ask her to marry you.",
-                                         "Promised her that you'll love"
-                                         + " her forever.",
-                                         "SHE SAID YES", 10,
-                                         "I will give you everything that"
-                                         "you desires, I love you.",
-                                         "SHE SAID NO", 15))
+        self.situations.append(
+            Situation(
+                "After a year of dating, you decided"
+                + " to ask her to marry you.",
+                "Promised her that you'll love" + " her forever.",
+                "SHE SAID YES",
+                10,
+                "I will give you everything that" "you desires, I love you.",
+                "SHE SAID NO",
+                15,
+            )
+        )
         self.play_next_situation(0)
 
     def play_next_situation(self, i):
@@ -169,22 +208,20 @@ class Love(Game):
         i = self.i
 
         if i == 4:
-            outcome = self.situations[i].final_condition(reply,
-                                                         self.player)
+            outcome = self.situations[i].final_condition(reply, self.player)
         else:
-            outcome = self.situations[i].condition(reply,
-                                                   self.player)
+            outcome = self.situations[i].condition(reply, self.player)
         self.say("Outcome: " + outcome + "\n")
 
         if i == 4:
             self.final_scores()
         else:
-            self.play_next_situation(i+1)
+            self.play_next_situation(i + 1)
 
     def final_scores(self):
         """Play the final scores bit."""
         if self.player.current_point >= 41:
-            self.say('CONGRATULATIONS!!!')
+            self.say("CONGRATULATIONS!!!")
         if self.player.current_point <= 40:
-            self.say('Oopsie...')
+            self.say("Oopsie...")
         self.goodbye()

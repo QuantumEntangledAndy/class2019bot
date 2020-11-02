@@ -23,14 +23,30 @@ from games.quiz import Quiz
 from games.potions import Potions
 
 import logging
+import colorlog
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from telegram import ReplyKeyboardRemove
 
-logging.basicConfig(level=logging.DEBUG,
-                    format='%(asctime)s - %(name)s - %(levelname)s'
-                           + '- %(message)s')
-
-logger = logging.getLogger(__name__)
+handler = colorlog.StreamHandler()
+handler.setFormatter(
+    colorlog.ColoredFormatter(
+        "%(log_color)s%(levelname)-8s%(reset)s %(blue)s%(message)s",
+        datefmt=None,
+        reset=True,
+        log_colors={
+            "DEBUG": "cyan",
+            "INFO": "green",
+            "WARNING": "yellow",
+            "ERROR": "red",
+            "CRITICAL": "red,bg_white",
+        },
+        secondary_log_colors={},
+        style="%",
+    )
+)
+logger = colorlog.getLogger(__name__)
+logger.addHandler(handler)
+logger.setLevel("INFO")
 
 users = {}
 
@@ -57,14 +73,13 @@ def no_keyboard():
 def pick_a_game(update, context):
     """Pick a game from a list and init the class."""
     for game in games:
-        message = '/' + game.game_name() + '\n' + game.description()
+        message = "/" + game.game_name() + "\n" + game.description()
         update.message.reply_text(message, **no_keyboard())
 
 
 def start(update, context):
     """Send a message when the command /start is issued."""
-    update.message.reply_text('Hi we should pick a game!',
-                              **no_keyboard())
+    update.message.reply_text("Hi we should pick a game!", **no_keyboard())
     chat_id = update.message.chat_id
     users[chat_id] = None
     pick_a_game(update, context)
@@ -72,7 +87,7 @@ def start(update, context):
 
 def help(update, context):
     """Send a message when the command /help is issued."""
-    update.message.reply_text('Help!', **no_keyboard())
+    update.message.reply_text("Help!", **no_keyboard())
 
 
 def error(update, context):
@@ -91,21 +106,20 @@ def command_recieved(update, context):
 
     if game:
         if not game.recieve_command(command):
-            logger.warning(f'Unhandelled command recieved {command}')
+            logger.warning(f"Unhandelled command recieved {command}")
     else:
         # Starting a new game
         for game_i in games:
-            if '/' + game_i.game_name() == command:
+            if "/" + game_i.game_name() == command:
                 users[chat_id] = game_i(context.bot, chat_id)
                 game = users[chat_id]
                 message = "You have chosen to play..\n"
-                message += '\n==================\n'
+                message += "\n==================\n"
                 message += game.welcome()
-                message += '\n==================\n'
-                message += '\nTo begin use /play'
-                message += '\nTo select another use /start'
-                update.message.reply_text(message,
-                                          **no_keyboard())
+                message += "\n==================\n"
+                message += "\nTo begin use /play"
+                message += "\nTo select another use /start"
+                update.message.reply_text(message, **no_keyboard())
 
 
 def text_recieved(update, context):
@@ -126,9 +140,12 @@ def main():
     # Create the Updater and pass it your bot's token.
     # Make sure to set use_context=True to use the new context based callbacks
     # Post version 12 this will no longer be necessary
+    logger.info("Getting Token")
     token_file = Path("token")
     chmod(str(token_file), 0o400)
     token = token_file.read_text().strip()
+
+    logger.info("Creating bot")
     updater = Updater(token, use_context=True)
 
     # Get the dispatcher to register handlers
@@ -146,8 +163,9 @@ def main():
     dp.add_error_handler(error)
 
     # Start the Bot
+    logger.info("Starting bot")
     updater.start_polling()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -6,11 +6,15 @@ The most evil name.
 Adapted to play on telegram by Andrew W King
 """
 
-__author__ = ("Kasin Onprasop,  Poomipat Laorsatiankul and"
-              + " Thanakrit Jiansamanya")
+__author__ = (
+    "Kasin Onprasop,  Poomipat Laorsatiankul and" + " Thanakrit Jiansamanya"
+)
 __copyright__ = "Copyright 2019, Chulalongkorn University"
-__credits__ = ["Kasin Onprasop",  "Poomipat Laorsatiankul",
-               "Thanakrit Jiansamanya"]
+__credits__ = [
+    "Kasin Onprasop",
+    "Poomipat Laorsatiankul",
+    "Thanakrit Jiansamanya",
+]
 __license__ = "AGPL"
 __version__ = "1.0.0"
 __maintainer__ = "Dr Andrew King"
@@ -21,7 +25,7 @@ import random
 from game import Game
 
 
-class Player():
+class Player:
     """Holds player data."""
 
     def __init__(self):
@@ -61,7 +65,7 @@ class Player():
             self.health = 100
 
 
-class Event():
+class Event:
     """Event base class."""
 
     def __init__(self, bot):
@@ -87,12 +91,17 @@ class NothingMuch(Event):
 
     def enter(self, player):
         """Enter the event."""
-        self.say("You keep walking in the hallway of the Evil"
-                 + " Jeff’s Castle")
-        self.say("You saw nothing but doors, which you don’t"
-                 + " know what’s inside")
-        self.say("However, you can only keep walking, and hope"
-                 + " for the princess’s safeness")
+        self.say(
+            "You keep walking in the hallway of the Evil" + " Jeff’s Castle"
+        )
+        self.say(
+            "You saw nothing but doors, which you don’t"
+            + " know what’s inside"
+        )
+        self.say(
+            "However, you can only keep walking, and hope"
+            + " for the princess’s safeness"
+        )
         self.times_event_occured += 1
         return "CONTINUE"
 
@@ -123,12 +132,16 @@ class SwordofMirai(Event):
         if player.has_item("Lootbox Key"):
             player.remove_item("Lootbox Key")
             player.add_item("Sword of Mirai")
-            self.say("You founded the Sword of Mirai in the"
-                     + " locked loot chest!")
-            self.say("This is the only sword that can be used"
-                     + " to defeat Evil Jeff!")
-            self.say("Only you can defeat Evil Jeff and save"
-                     + " the princess!")
+            self.say(
+                "You founded the Sword of Mirai in the" + " locked loot chest!"
+            )
+            self.say(
+                "This is the only sword that can be used"
+                + " to defeat Evil Jeff!"
+            )
+            self.say(
+                "Only you can defeat Evil Jeff and save" + " the princess!"
+            )
         else:
             self.say("You keep walking.")
         self.times_event_occured += 1
@@ -179,8 +192,9 @@ class Healing(Event):
     def enter(self, player):
         """Enter the event."""
         self.say("On your way, you found the fountain of youth.")
-        self.say("You drank the water from the fountain and gain"
-                 + " some healing!")
+        self.say(
+            "You drank the water from the fountain and gain" + " some healing!"
+        )
         self.say("You continue with your journey feeling refresh.")
         player.get_healed(40)
         self.times_event_occured += 1
@@ -228,7 +242,7 @@ class MiniBoss(Event):
     def enter(self, player):
         """Enter the event."""
         if not player.has_item("Boss room key"):
-            self.say("You have entered a \'Mini Boss\' room!")
+            self.say("You have entered a 'Mini Boss' room!")
             self.say("You was able to defeat the mini boss!")
             self.say("However, you suffer from major damage!")
             player.get_damaged(50)
@@ -253,8 +267,11 @@ class EvilJeff(Event):
         if player.has_item("Boss room key"):
             self.say("Luckily, you,ve already found the key to open it.")
             self.player = player
-            self.choice("Do you wish to enter the boss room?", ["Yes", "No"],
-                        self.stage2)
+            self.choice(
+                "Do you wish to enter the boss room?",
+                ["Yes", "No"],
+                self.stage2,
+            )
         else:
             self.say("You don't have the key to enter the room.")
             self.say("You continue searching.")
@@ -269,11 +286,13 @@ class EvilJeff(Event):
             self.say("YoU cAn’T dEfEaT mE cAuSe YoU aRe NoObs.")
             if player.has_item("Sword of Mirai"):
                 player.remove_item("Sword of Mirai")
-                self.say("Bob the hero says \'Omae wa mou shindeiru\'")
-                self.say("Evil Jeff says \'Nani!?\'")
-                self.say("Bob the hero says \'Ora ora ora ora"
-                         + " ora ora ora ora ora ora ora\'")
-                self.say("Evil Jeff says \'AHHHHHHH   XP\'")
+                self.say("Bob the hero says 'Omae wa mou shindeiru'")
+                self.say("Evil Jeff says 'Nani!?'")
+                self.say(
+                    "Bob the hero says 'Ora ora ora ora"
+                    + " ora ora ora ora ora ora ora'"
+                )
+                self.say("Evil Jeff says 'AHHHHHHH   XP'")
                 player.get_damaged(60)
                 if player.health > 0:
                     self.times_event_occured += 1
@@ -295,26 +314,44 @@ class Start(Event):
 
     def enter(self, player):
         """Enter the event."""
-        self.say("In a far far away land, Ayaka, a well beloved princess of"
-                 + " the human tribe, live happily in her kingdom.")
-        self.say("Princess Ayaka is a noble young lady who carries herself"
-                 + " with poise and dignity.")
-        self.say("She listens attentively. And when she speaks, she"
-                 + " carefully chooses her words.")
-        self.say("Gentle, generous, compassionate, patient, good-natured"
-                 + " and forgiving are all words to describe her.")
+        self.say(
+            "In a far far away land, Ayaka, a well beloved princess of"
+            + " the human tribe, live happily in her kingdom."
+        )
+        self.say(
+            "Princess Ayaka is a noble young lady who carries herself"
+            + " with poise and dignity."
+        )
+        self.say(
+            "She listens attentively. And when she speaks, she"
+            + " carefully chooses her words."
+        )
+        self.say(
+            "Gentle, generous, compassionate, patient, good-natured"
+            + " and forgiving are all words to describe her."
+        )
 
-        self.say("Unfortunately, Evil Jeff, the dark evil lord of the"
-                 + " dark world, has attacked the kingdom.")
-        self.say("Evil jeff has kidnapped Princess Ayaka and return"
-                 + " to his castle.")
-        self.say("The kingdom could not stand the loss of their"
-                 + " beloved princess.")
-        self.say("YOU, a hero named Bob, offers to save the princess"
-                 + " because you are strong and handsome.")
+        self.say(
+            "Unfortunately, Evil Jeff, the dark evil lord of the"
+            + " dark world, has attacked the kingdom."
+        )
+        self.say(
+            "Evil jeff has kidnapped Princess Ayaka and return"
+            + " to his castle."
+        )
+        self.say(
+            "The kingdom could not stand the loss of their"
+            + " beloved princess."
+        )
+        self.say(
+            "YOU, a hero named Bob, offers to save the princess"
+            + " because you are strong and handsome."
+        )
 
-        self.say("After the journey to the west, you finally arrive"
-                 + " at Evil Jeff’s castle!")
+        self.say(
+            "After the journey to the west, you finally arrive"
+            + " at Evil Jeff’s castle!"
+        )
         self.say("Entered the castle, you venturing off into the unknown...")
         return "CONTINUE"
 
@@ -356,8 +393,11 @@ class Jeff(Game):
 
     def welcome(self):
         """Get a welcome message."""
-        return ("Welcome to Jeff!\nThe most fearsome name imaginable!\n"
-                + "Created by " + __author__)
+        return (
+            "Welcome to Jeff!\nThe most fearsome name imaginable!\n"
+            + "Created by "
+            + __author__
+        )
 
     def play(self):
         """Start the game."""
@@ -373,7 +413,7 @@ class Jeff(Game):
             HealthPotion(self),
             UseHealthPotion(self),
             MiniBoss(self),
-            EvilJeff(self)
+            EvilJeff(self),
         ]
 
         self.start = Start(self)
@@ -392,8 +432,11 @@ class Jeff(Game):
 
     def ask_choice(self):
         """Ask the critical choice."""
-        self.choice("You are confronted with a choice of paths",
-                    ["Left", "Forward", "Right"], self.the_choice)
+        self.choice(
+            "You are confronted with a choice of paths",
+            ["Left", "Forward", "Right"],
+            self.the_choice,
+        )
 
     def the_choice(self, choice):
         """Repeating post choice."""
@@ -420,7 +463,8 @@ class Jeff(Game):
     def handle_results(self, event_result):
         """Handel the handle results."""
         if event_result == "BAD ENDING":
-            self.say("""
+            self.say(
+                """
             =================
             You got defeated by Evil Jeff!
             No one could defeat Evil Jeff!
@@ -429,33 +473,39 @@ class Jeff(Game):
             GAME OVER
 
             =================
-            """)
+            """
+            )
             self.goodbye()
             return
         elif event_result == "HAPPY ENDING":
-            self.say("""
+            self.say(
+                """
             ================
             Congratulations!
             You have defeated Evil Jeff!
             You married the princess and lived happily ever after
             Fin...
             ================
-            """)
+            """
+            )
             self.goodbye()
             return
         elif event_result == "GOOD ENDING":
-            self.say("""
+            self.say(
+                """
             ================
             Congratulations!
             You have defeated Evil Jeff but with the cost of your life!
             The kingdom will not forget your sacrifice!
             Fin...
             ================
-            """)
+            """
+            )
             self.goodbye()
             return
         elif event_result == "GAME OVER":
-            self.say("""
+            self.say(
+                """
             ================
 
             You died...
@@ -463,7 +513,8 @@ class Jeff(Game):
             GAME OVER
 
             ================
-            """)
+            """
+            )
             self.goodbye()
             return
         self.ask_choice()
@@ -473,5 +524,7 @@ class Jeff(Game):
         for event in self.events:
             event_type = type(event)
             event_name = event_type.__name__
-            self.say(f"You run into {event_name},"
-                     + f" {event.times_event_occured} time(s)")
+            self.say(
+                f"You run into {event_name},"
+                + f" {event.times_event_occured} time(s)"
+            )

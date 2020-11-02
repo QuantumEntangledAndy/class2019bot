@@ -7,11 +7,16 @@ Authours:  Thitaporn Petchpadoong,  Nakamol Sansuktaweesub,
 Adapted to play on telegram by Andrew W King
 """
 
-__author__ = ("Thitaporn Petchpadoong,  Nakamol Sansuktaweesub,"
-              + " Sarisa Keittivuti and Proud Prakopvitayakit")
+__author__ = (
+    "Thitaporn Petchpadoong,  Nakamol Sansuktaweesub,"
+    + " Sarisa Keittivuti and Proud Prakopvitayakit"
+)
 __copyright__ = "Copyright 2019, Chulalongkorn University"
-__credits__ = ["Thitaporn Petchpadoong",  "Nakamol Sansuktaweesub",
-               "Proud Prakopvitayakit"]
+__credits__ = [
+    "Thitaporn Petchpadoong",
+    "Nakamol Sansuktaweesub",
+    "Proud Prakopvitayakit",
+]
 __license__ = "AGPL"
 __version__ = "1.0.0"
 __maintainer__ = "Dr Andrew King"
@@ -36,8 +41,11 @@ class Jungle(Game):
 
     def welcome(self):
         """Get a welcome message."""
-        return ("Jungle!\nWhere monkies are the least of your worries\n"
-                + "Created by " + __author__)
+        return (
+            "Jungle!\nWhere monkies are the least of your worries\n"
+            + "Created by "
+            + __author__
+        )
 
     def play(self):
         """Get the party started."""
@@ -53,17 +61,23 @@ class Jungle(Game):
         """Play stage 1."""
         self.say("=" * 95)
         self.say("Welcome to the Jungle!!!")
-        self.say("There are many dangerous creatures such as monkeys,"
-                 + " hippos, tigers, and cannibals.")
-        self.say("In order to survive in this jungle, you need to build"
-                 + " a house to protect yourself from them.")
+        self.say(
+            "There are many dangerous creatures such as monkeys,"
+            + " hippos, tigers, and cannibals."
+        )
+        self.say(
+            "In order to survive in this jungle, you need to build"
+            + " a house to protect yourself from them."
+        )
         self.score = 0
-        self.say("Level 1: Build a house that will keep you away from"
-                 + " the dangerous monkeys.")
+        self.say(
+            "Level 1: Build a house that will keep you away from"
+            + " the dangerous monkeys."
+        )
         self.say("1. wood")
         self.say("2. hay")
         self.say("3. clay")
-        self.choice("Your material?", ['wood', 'hay', 'clay'], self.answer1)
+        self.choice("Your material?", ["wood", "hay", "clay"], self.answer1)
 
     def answer1(self, answer):
         """Answer for stage1."""
@@ -85,12 +99,14 @@ class Jungle(Game):
     def stage2(self):
         """Play stage2."""
         self.score = 0
-        self.say("Level 2: Build a house that will keep you away"
-                 + " from the aggressive hippos.")
+        self.say(
+            "Level 2: Build a house that will keep you away"
+            + " from the aggressive hippos."
+        )
         self.say("1. brick")
         self.say("2. wood")
         self.say("3. rock")
-        self.choice("Your material?", ['brick', 'wood', 'rock'], self.answer2)
+        self.choice("Your material?", ["brick", "wood", "rock"], self.answer2)
 
     def answer2(self, answer):
         """Answer to stage2."""
@@ -111,14 +127,19 @@ class Jungle(Game):
     def stage3(self):
         """Play stage3."""
         self.score = 0
-        self.say("Level 3.1 Build a house that will keep you away"
-                 + " from the hungry tigers.")
+        self.say(
+            "Level 3.1 Build a house that will keep you away"
+            + " from the hungry tigers."
+        )
         self.say("1. stainless steel")
         self.say("2. brick")
         self.say("3. concrete")
         self.say("4. gold")
-        self.choice("Your material?", ['stainless_steel', 'brick',
-                                       'concrete', 'gold'], self.answer3_1)
+        self.choice(
+            "Your material?",
+            ["stainless_steel", "brick", "concrete", "gold"],
+            self.answer3_1,
+        )
 
     def answer3_1(self, answer):
         """Answer for stage3.1."""
@@ -132,13 +153,16 @@ class Jungle(Game):
             self.score += 3
         else:
             self.score += 0
-        self.say("Level 3.2 In order to survive from these hungry tigers,"
-                 + "you need to choose your weapon.")
+        self.say(
+            "Level 3.2 In order to survive from these hungry tigers,"
+            + "you need to choose your weapon."
+        )
         self.say("1. saucepan")
         self.say("2. spears")
         self.say("3. bacon")
-        self.choice("Your weapon?", ['saucepan', 'spears', 'bacon'],
-                    self.answer3_2)
+        self.choice(
+            "Your weapon?", ["saucepan", "spears", "bacon"], self.answer3_2
+        )
 
     def answer3_2(self, answer):
         """Answer for stage 3.2."""
@@ -159,14 +183,19 @@ class Jungle(Game):
     def stage4(self):
         """Play stage4."""
         self.score = 0
-        self.say("Level 4.1 Build a house that will keep you away from the"
-                 + " savage cannibals")
+        self.say(
+            "Level 4.1 Build a house that will keep you away from the"
+            + " savage cannibals"
+        )
         self.say("1. concrete")
         self.say("2. glass")
         self.say("3. stainless steel")
         self.say("4. gold")
-        self.choice("Your material?", ['concrete', 'glass', 'stainless_steel',
-                                       'gold'], self.answer4_1)
+        self.choice(
+            "Your material?",
+            ["concrete", "glass", "stainless_steel", "gold"],
+            self.answer4_1,
+        )
 
     def answer4_1(self, answer):
         """Answer for 4.1."""
@@ -181,13 +210,18 @@ class Jungle(Game):
         else:
             self.score += 0
 
-        self.say("Level 4.2 In order to survive from these save cannibals,"
-                 + " you need to choose your weapon.")
+        self.say(
+            "Level 4.2 In order to survive from these save cannibals,"
+            + " you need to choose your weapon."
+        )
         self.say("1. carrots")
         self.say("2. shotguns")
         self.say("3. tennis bat")
-        self.choice("Your weapon?", ['carrots', 'shotguns', 'tennis_bat'],
-                    self.answer4_2)
+        self.choice(
+            "Your weapon?",
+            ["carrots", "shotguns", "tennis_bat"],
+            self.answer4_2,
+        )
 
     def answer4_2(self, answer):
         """Answer for 4.2."""

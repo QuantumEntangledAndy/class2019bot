@@ -32,14 +32,20 @@ class TestGame(Game):
     def play(self):
         """Start playing, shoud reset too."""
         self.say("The test game starts")
-        self.choice("You have to decide what to do", ['left', 'right'],
-                    [self.turn, self.turn])
+        self.choice(
+            "You have to decide what to do",
+            ["left", "right"],
+            [self.turn, self.turn],
+        )
 
     def turn(self, input):
         """Take the turn."""
-        if input == 'left':
+        if input == "left":
             self.say("You turn left... it feels wrong")
-        elif input == 'right':
+        elif input == "right":
             self.say("You turn right... it feels right")
-        self.choice("You have to decide what to do", ['left', 'right'],
-                    [self.turn, self.turn])
+        self.choice(
+            "You have to decide what to do",
+            ["left", "right"],
+            [self.turn, self.turn],
+        )

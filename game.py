@@ -10,12 +10,12 @@ from telegram import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
 def build_menu(buttonTexts, cols):
     """Build a menu of options from a list."""
     for idx, buttonText in enumerate(buttonTexts):
-        if not buttonText.startswith('/'):
-            buttonTexts[idx] = '/' + buttonText
+        if not buttonText.startswith("/"):
+            buttonTexts[idx] = "/" + buttonText
 
     result = []
     for i in range(0, len(buttonTexts), cols):
-        result.append([KeyboardButton(s) for s in buttonTexts[i:i+cols]])
+        result.append([KeyboardButton(s) for s in buttonTexts[i : i + cols]])
     return result
 
 
@@ -24,7 +24,7 @@ def make_keyboard(replies):
     return ReplyKeyboardMarkup(build_menu(replies, 2))
 
 
-class Game():
+class Game:
     """Base class for the game."""
 
     def __init__(self, bot, chat_id):
@@ -37,28 +37,28 @@ class Game():
     def say(self, message):
         """Say something in the chat."""
         if message.strip():  # Check the message is not whitespace/blank
-            self.bot.send_message(self.chat_id, message,
-                                  reply_markup=ReplyKeyboardRemove())
+            self.bot.send_message(
+                self.chat_id, message, reply_markup=ReplyKeyboardRemove()
+            )
 
     def choice(self, message="What do you choose?", options=[], callbacks=[]):
         """Give the player some choices."""
         self.possible_replies = []
         if callable(callbacks):
             for idx, choice in enumerate(options):
-                self.possible_replies.append({
-                    'command': choice,
-                    'callback': callbacks
-                })
+                self.possible_replies.append(
+                    {"command": choice, "callback": callbacks}
+                )
         else:
             if len(options) != len(callbacks):
-                raise ValueError("Length of options not the same as length of"
-                                 + "callbacks")
+                raise ValueError(
+                    "Length of options not the same as length of" + "callbacks"
+                )
 
             for idx, choice in enumerate(options):
-                self.possible_replies.append({
-                    'command': choice,
-                    'callback': callbacks[idx]
-                })
+                self.possible_replies.append(
+                    {"command": choice, "callback": callbacks[idx]}
+                )
 
         keyboard = make_keyboard(list(options))
         self.bot.send_message(self.chat_id, message, reply_markup=keyboard)
@@ -70,14 +70,14 @@ class Game():
 
     def recieve_command(self, command):
         """Handel the recieved command."""
-        if command == '/play':
+        if command == "/play":
             self.possible_replies = []
             self.play()
             return True
         for possible_reply in self.possible_replies:
-            if '/' + possible_reply['command'] == command:
-                if callable(possible_reply['callback']):
-                    possible_reply['callback'](possible_reply['command'])
+            if "/" + possible_reply["command"] == command:
+                if callable(possible_reply["callback"]):
+                    possible_reply["callback"](possible_reply["command"])
                     return True
         return False
 
@@ -105,7 +105,9 @@ class Game():
 
     def goodbye(self):
         """Send the goodbye message."""
-        self.say("==================================\n"
-                 + "That is the end of this game.\n"
-                 + "You can play again with /play\n"
-                 + "Or choose another game with /start")
+        self.say(
+            "==================================\n"
+            + "That is the end of this game.\n"
+            + "You can play again with /play\n"
+            + "Or choose another game with /start"
+        )

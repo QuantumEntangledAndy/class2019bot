@@ -7,11 +7,17 @@ Authours: Surawat Chukae,  Watcharaphol Vongnoi, Narutchai Arunrattananukul,
 Adapted to play on telegram by Andrew W King
 """
 
-__author__ = ("Surawat Chukae,  Watcharaphol Vongnoi,"
-              + " Narutchai Arunrattananukul and Peemapat Jumrusprasert")
+__author__ = (
+    "Surawat Chukae,  Watcharaphol Vongnoi,"
+    + " Narutchai Arunrattananukul and Peemapat Jumrusprasert"
+)
 __copyright__ = "Copyright 2019, Chulalongkorn University"
-__credits__ = ["Surawat Chukae",  "Watcharaphol Vongnoi",
-               "Narutchai Arunrattananukul", "Peemapat Jumrusprasert"]
+__credits__ = [
+    "Surawat Chukae",
+    "Watcharaphol Vongnoi",
+    "Narutchai Arunrattananukul",
+    "Peemapat Jumrusprasert",
+]
 __license__ = "AGPL"
 __version__ = "2.2.0"
 __maintainer__ = "Dr Andrew King"
@@ -22,13 +28,13 @@ __status__ = "Production"
 import random
 from game import Game
 
-TPP = ''  # Purple Text
-TBlue = ''  # Blue Text
-TYL = ''  # Yellow Text
-TRED = ''  # Red Text
+TPP = ""  # Purple Text
+TBlue = ""  # Blue Text
+TYL = ""  # Yellow Text
+TRED = ""  # Red Text
 
 
-class Player():
+class Player:
     """The player class."""
 
     def __init__(self, bot):
@@ -102,8 +108,8 @@ class Player():
 
     def show_status(self):
         """Show players stats."""
-        self.say(f'Your hungry is {self.hungry}')
-        self.say(f'Your health is {self.health}')
+        self.say(f"Your hungry is {self.hungry}")
+        self.say(f"Your health is {self.health}")
         self.say("Your items are...")
         self.show_inventory()
 
@@ -137,7 +143,7 @@ class Player():
                 self.say(f"You have {count} {item}(s)")
 
 
-class Event():
+class Event:
     """The base event class."""
 
     def __init__(self, bot):
@@ -159,48 +165,49 @@ class Event():
 
     def ask_if_player_want_to_use_item(self, player, callback):
         """Use an item."""
-        msg = 'Do you want to use item?'
+        msg = "Do you want to use item?"
         self.player = player
         self.callback = callback
-        self.choose(msg, ['yes', 'no'], self.use_that_item_result)
+        self.choose(msg, ["yes", "no"], self.use_that_item_result)
 
     def use_that_item_result(self, answer):
         """Act on user's reply."""
-        if answer == 'yes':
-            msg = 'Which item?'
+        if answer == "yes":
+            msg = "Which item?"
 
             if len(self.player.inventory) == 0:
                 self.say("NO ITEMS YOU FOOL")
                 self.callback("CONTINUE")
             else:
-                items = [item.replace(" ", "_") for item in
-                         self.player.inventory.keys()]
-                self.choose(msg, items,
-                            self.the_chosen_item)
+                items = [
+                    item.replace(" ", "_")
+                    for item in self.player.inventory.keys()
+                ]
+                self.choose(msg, items, self.the_chosen_item)
         else:
             self.callback("CONTINUE")
 
     def the_chosen_item(self, answer):
         """Actual use it already."""
         answer = answer.replace("_", " ")
-        if answer == 'food':
+        if answer == "food":
             self.say("You ate it")
             self.say("Yum")
-            self.player.remove_item('food')
+            self.player.remove_item("food")
             self.player.hungry += 1
             self.callback("CONTINUE")
             return
-        elif answer == 'cat':
+        elif answer == "cat":
             self.say("You petted the cat, it helped calm you down")
             self.callback("CONTINUE")
             return
-        elif answer == 'radio':
+        elif answer == "radio":
             self.say("This sound good")
             self.callback("CONTINUE")
             return
-        elif answer == 'first aid kit':
+        elif answer == "first aid kit":
             self.say("You use first aid kit")
-            self.player.remove_item('first aid kit')
+            self.player.remove_item("first aid kit")
             self.get_healed(90)
             self.callback("CONTINUE")
             return
@@ -216,15 +223,24 @@ class Preparing(Event):
         self.say("You have to survive for 7 days to win tihs")
         self.say("now")
         self.say("You hve to pick 3 item out of 7")
-        self.say("which is food, video game, cat, gun, first aid kit, radio"
-                 + ", bird")
+        self.say(
+            "which is food, video game, cat, gun, first aid kit, radio"
+            + ", bird"
+        )
 
     def get_user_choice(self, person):
         """Ask player what they want."""
         msg = "What 1 item you want to choose?"
         self.person = person
-        items = ['food', 'video_game', 'cat', 'gun', 'first_aid_kit', 'radio',
-                 'bird']
+        items = [
+            "food",
+            "video_game",
+            "cat",
+            "gun",
+            "first_aid_kit",
+            "radio",
+            "bird",
+        ]
         self.choose(msg, items, self.get_start_item1)
 
     def get_start_item1(self, start_item1):
@@ -234,8 +250,15 @@ class Preparing(Event):
 
         msg = "What 2 item you want to choose?"
 
-        items = ['food', 'video_game', 'cat', 'gun', 'first_aid_kit', 'radio',
-                 'bird']
+        items = [
+            "food",
+            "video_game",
+            "cat",
+            "gun",
+            "first_aid_kit",
+            "radio",
+            "bird",
+        ]
         self.choose(msg, items, self.get_start_item2)
 
     def get_start_item2(self, start_item2):
@@ -244,8 +267,15 @@ class Preparing(Event):
         self.person.add_item(start_item2)
 
         msg = "What 3 item you want to choose?"
-        items = ['food', 'video_game', 'cat', 'gun', 'first_aid_kit', 'radio',
-                 'bird']
+        items = [
+            "food",
+            "video_game",
+            "cat",
+            "gun",
+            "first_aid_kit",
+            "radio",
+            "bird",
+        ]
         self.choose(msg, items, self.get_start_item3)
 
     def get_start_item3(self, start_item3):
@@ -261,16 +291,20 @@ class EveryDay(Event):
     def __init__(self, bot):
         """Init the possibilites."""
         self.bot = bot
-        self.possible_events = [RobberyTurn(self),
-                                RadioactiveTurn(self),
-                                ZombieTurn(self),
-                                StressTurn(self),
-                                AndrewTurn(self),
-                                SendhelpTurn(self),
-                                MiceinvadeTurn(self)]
-        self.explore_events = [Luckyday(self),
-                               Hopelessday(self),
-                               AttackedbyBandit(self)]
+        self.possible_events = [
+            RobberyTurn(self),
+            RadioactiveTurn(self),
+            ZombieTurn(self),
+            StressTurn(self),
+            AndrewTurn(self),
+            SendhelpTurn(self),
+            MiceinvadeTurn(self),
+        ]
+        self.explore_events = [
+            Luckyday(self),
+            Hopelessday(self),
+            AttackedbyBandit(self),
+        ]
 
     def enter(self, player):
         """Do the event."""
@@ -292,20 +326,20 @@ class EveryDay(Event):
 
     def post_use_items(self, result):
         """After using item."""
-        self.choose("Do you want to explore ?", ['yes', 'no'], self.post_ask)
+        self.choose("Do you want to explore ?", ["yes", "no"], self.post_ask)
 
     def post_ask(self, answer):
         """Act on the reply."""
         player = self.player
-        if answer == 'yes':
+        if answer == "yes":
             random_event = random.choice(self.explore_events)
             random_event.enter(player)
-        elif answer == 'no':
+        elif answer == "no":
             self.post_explore("CONTINUE")
 
     def post_explore(self, result):
         """Do post explore event."""
-        self.choose("You should sleep", ['sleep'], self.post_sleep)
+        self.choose("You should sleep", ["sleep"], self.post_sleep)
 
     def post_sleep(self, result):
         """Do post sleep."""
@@ -328,8 +362,10 @@ class RobberyTurn(Event):
         else:
             rand_event = random.randint(1, 3)
             if rand_event == 1:
-                self.say("The robber cant find any hidden food so they"
-                         + " shoot gun at you")
+                self.say(
+                    "The robber cant find any hidden food so they"
+                    + " shoot gun at you"
+                )
                 player.get_damaged(40)
             elif rand_event == 2:
                 self.say("They angry and punch you in the face")
@@ -347,8 +383,10 @@ class RadioactiveTurn(Event):
         self.say("The military drop the radioactive bomb around the city")
         self.say("The effect of the bomb made you sick ")
         if player.has_item("first aid kit"):
-            self.say("You have pick up a first aid kit to heal from swallow"
-                     + " the radioactive")
+            self.say(
+                "You have pick up a first aid kit to heal from swallow"
+                + " the radioactive"
+            )
             player.remove_item("first aid kit")
             self.say("You safe for now")
         else:
@@ -383,8 +421,10 @@ class ZombieTurn(Event):
                 self.say("You swallow too much")
                 player.get_damaged(20)
             else:
-                self.say("You fight with your bare hand and defend"
-                         + " your basement")
+                self.say(
+                    "You fight with your bare hand and defend"
+                    + " your basement"
+                )
         self.bot.post_random_event("CONTINUE")
 
 
@@ -421,8 +461,10 @@ class AndrewTurn(Event):
         if player.has_item("cat"):
             self.say("You give him a cat")
             player.remove_item("cat")
-            self.say("Andrew love that you give him a cat so he give"
-                     + "you A grade")
+            self.say(
+                "Andrew love that you give him a cat so he give"
+                + "you A grade"
+            )
             self.bot.post_random_event("VICTORY")
         else:
             self.say("He just come for visit and left")
@@ -436,8 +478,9 @@ class SendhelpTurn(Event):
         """Play the event."""
         self.say("You think about asking for help using bird")
         if player.has_item("bird"):
-            self.say("You have pick up a bird to take a letter"
-                     + " to ask for help")
+            self.say(
+                "You have pick up a bird to take a letter" + " to ask for help"
+            )
             player.remove_item("bird")
             self.say("Someone knock your door and give you food")
             player.add_item("food")
@@ -459,8 +502,10 @@ class MiceinvadeTurn(Event):
         else:
             rand_event = random.randint(1, 3)
             if rand_event == 1:
-                self.say("you really hate mice and it attack you while"
-                         + " you sleeping")
+                self.say(
+                    "you really hate mice and it attack you while"
+                    + " you sleeping"
+                )
                 player.get_damaged(90)
             elif rand_event == 2:
                 self.say("it bite your finger when you try to pet it")
@@ -476,12 +521,19 @@ class Luckyday(Event):
 
     def enter(self, player):
         """Play the event."""
-        self.say(TBlue + "You are going to explore the police station near"
-                 + " your bunker")
-        self.say("You noticed that there were a armory and supplies under"
-                 + " the police station")
-        self.say("When you have reached there you have found a gun, radio,"
-                 + " first aid kit, food")
+        self.say(
+            TBlue
+            + "You are going to explore the police station near"
+            + " your bunker"
+        )
+        self.say(
+            "You noticed that there were a armory and supplies under"
+            + " the police station"
+        )
+        self.say(
+            "When you have reached there you have found a gun, radio,"
+            + " first aid kit, food"
+        )
         player.add_item("food")
         player.add_item("gun")
         player.add_item("radio")
@@ -495,8 +547,9 @@ class Hopelessday(Event):
     def enter(self, player):
         """Play the event."""
         self.say(TBlue + "There are the mall in the east of your bunker")
-        self.say("When you arrived there, you walk around and"
-                 + " looking for food")
+        self.say(
+            "When you arrived there, you walk around and" + " looking for food"
+        )
         self.say("You keep searching for food")
         self.say("But nothing there")
         self.say("You decided to go back home woth empty bag")
@@ -508,8 +561,9 @@ class AttackedbyBandit(Event):
 
     def enter(self, player):
         """Play the event."""
-        self.say(TBlue + "You going to search in the forest behide"
-                 + " your bunker")
+        self.say(
+            TBlue + "You going to search in the forest behide" + " your bunker"
+        )
         self.say("You look around and found a food can in the trash")
         player.add_item("food")
         player.add_item("food")
@@ -548,8 +602,11 @@ class Apocalypse(Game):
 
     def welcome(self):
         """Get a welcome message."""
-        return ("Apocalypse\nThe end of the world. Zombies included\n"
-                + "Created by " + __author__)
+        return (
+            "Apocalypse\nThe end of the world. Zombies included\n"
+            + "Created by "
+            + __author__
+        )
 
     def play(self):
         """Start playing."""
